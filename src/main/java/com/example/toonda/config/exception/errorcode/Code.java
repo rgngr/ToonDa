@@ -43,6 +43,8 @@ public enum Code {
     NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT("Security Context에 인증 정보가 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     USER_SIGNUP_SUCCESS("회원가입 성공", HttpStatus.OK),
     USER_SIGNUP_FAIL("회원가입 실패", HttpStatus.BAD_REQUEST),
+    EMAIL_CHECK_SUCCESS("이메일 중복 확인 성공", HttpStatus.OK),
+    USERNAME_CHECK_SUCCESS("유저네임 중복 확인 성공", HttpStatus.OK),
     USER_LOGIN_SUCCESS("로그인 성공", HttpStatus.OK),
     USER_FOLLOW_SUCCESS("유저 팔로우 성공", HttpStatus.OK),
     USER_FOLLOW_FAIL("유저 팔로우 실패", HttpStatus.OK),
