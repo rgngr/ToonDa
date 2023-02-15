@@ -1,6 +1,6 @@
-package com.example.toonda.user.dto;
+package com.example.toonda.rest.user.dto;
 
-import com.example.toonda.user.entity.User;
+import com.example.toonda.rest.user.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
