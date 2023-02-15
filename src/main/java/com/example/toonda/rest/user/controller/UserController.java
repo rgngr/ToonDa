@@ -1,11 +1,11 @@
-package com.example.toonda.user.controller;
+package com.example.toonda.rest.user.controller;
 
 import com.example.toonda.config.dto.DataResponseDto;
 import com.example.toonda.config.dto.ResponseDto;
 import com.example.toonda.config.exception.errorcode.Code;
-import com.example.toonda.user.dto.LoginRequestDto;
-import com.example.toonda.user.dto.SignupRequestDto;
-import com.example.toonda.user.service.UserService;
+import com.example.toonda.rest.user.dto.LoginRequestDto;
+import com.example.toonda.rest.user.dto.SignupRequestDto;
+import com.example.toonda.rest.user.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

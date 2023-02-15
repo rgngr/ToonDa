@@ -1,4 +1,4 @@
-package com.example.toonda.user.entity;
+package com.example.toonda.rest.user.entity;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
