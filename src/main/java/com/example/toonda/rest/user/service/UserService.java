@@ -1,13 +1,13 @@
-package com.example.toonda.user.service;
+package com.example.toonda.rest.user.service;
 
 import com.example.toonda.config.exception.RestApiException;
 import com.example.toonda.config.exception.errorcode.Code;
 import com.example.toonda.config.jwt.JwtUtil;
-import com.example.toonda.user.dto.LoginRequestDto;
-import com.example.toonda.user.dto.LoginResponseDto;
-import com.example.toonda.user.dto.SignupRequestDto;
-import com.example.toonda.user.entity.User;
-import com.example.toonda.user.repository.UserRepository;
+import com.example.toonda.rest.user.dto.LoginRequestDto;
+import com.example.toonda.rest.user.dto.SignupRequestDto;
+import com.example.toonda.rest.user.entity.User;
+import com.example.toonda.rest.user.repository.UserRepository;
+import com.example.toonda.rest.user.dto.LoginResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
