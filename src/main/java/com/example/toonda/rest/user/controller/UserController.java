@@ -24,15 +24,13 @@ public class UserController {
     @ApiOperation(value = "이메일 중복 확인")
     @GetMapping(value = "/email-check/{email:.+}/")
     public ResponseDto emailCheck(@PathVariable String email) {
-        userService.emailCheck(email);
-        return ResponseDto.of(true, Code.EMAIL_CHECK_SUCCESS);
+        return userService.emailCheck(email);
     }
 
     @ApiOperation(value = "유저네임 중복 확인")
     @GetMapping(value = "/username-check/{username}")
     public ResponseDto usernameCheck(@PathVariable String username) {
-        userService.usernameCheck(username);
-        return ResponseDto.of(true, Code.USERNAME_CHECK_SUCCESS);
+        return userService.usernameCheck(username);
     }
 
     @ApiOperation(value = "회원가입")

@@ -1,5 +1,6 @@
 package com.example.toonda.rest.user.service;
 
+import com.example.toonda.config.dto.ResponseDto;
 import com.example.toonda.config.exception.RestApiException;
 import com.example.toonda.config.exception.errorcode.Code;
 import com.example.toonda.config.jwt.JwtUtil;
@@ -24,20 +25,16 @@ public class UserService {
 
     // 이메일 중복 확인
     @Transactional(readOnly = true)
-    public void emailCheck(String email) {
+    public ResponseDto emailCheck(String email) {
         boolean isExistEmail = userRepository.existsByEmail(email);
-        if (isExistEmail) {
-            throw new RestApiException(Code.OVERLAPPED_EMAIL);
-        }
+        return ResponseDto.of(isExistEmail, Code.EMAIL_CHECK_SUCCESS);
     }
 
     // 유저네임 중복 확인
     @Transactional(readOnly = true)
-    public void usernameCheck(String username) {
+    public ResponseDto usernameCheck(String username) {
         boolean isExistUsername = userRepository.existsByUsername(username);
-        if (isExistUsername) {
-            throw new RestApiException(Code.OVERLAPPED_USERNAME);
-        }
+        return ResponseDto.of(isExistUsername, Code.USERNAME_CHECK_SUCCESS);
     }
 
     // 회원가입
