@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.8'
+    id 'org.springframework.boot' version '2.7.6'
     id 'io.spring.dependency-management' version '1.0.15.RELEASE'
 }
 
@@ -44,6 +44,11 @@ dependencies {
     implementation 'software.amazon.awssdk:aws-sdk-java:2.18.35'
     // swagger
     implementation "io.springfox:springfox-boot-starter:3.0.0"
+    //test
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
+    // restAssured
+    testImplementation 'io.rest-assured:rest-assured:4.4.0'
 }
 
 //빌드 시 plain jar 파일은 만들어지지 않도록
