@@ -10,14 +10,13 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-@Tag(name = "users", description = "유저 관련 API")
+@Tag(name = "users", description = "회원가입, 로그인 관련 API")
 public class UserController {
 
     private final UserService userService;
