@@ -1,5 +1,6 @@
 package com.example.toonda.rest.user.entity;
 
+import com.example.toonda.rest.user.dto.SignupRequestDto;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
@@ -22,18 +23,21 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Column
     private String img;
 
+    @Column
     private String introduction;
 
+    @Column
     private boolean deleted = false;
 
     @Column(unique = true)
     private Long kakaoId;
 
-    public User (String email, String username, String password) {
-        this.email = email;
-        this.username = username;
+    public User (SignupRequestDto requestDto, String password) {
+        this.email = requestDto.getEmail();
+        this.username = requestDto.getUsername();
         this.password = password;
     }
 
