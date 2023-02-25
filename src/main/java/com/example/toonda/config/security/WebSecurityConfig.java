@@ -39,23 +39,7 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests()
                 // 토큰검증 필요없는 페이지 설정
-                .antMatchers( "/health").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/users/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/kakao/callback").permitAll()
-                .antMatchers( "/api/users/mail-code/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/meetings/{\\d+}").permitAll() // 모임 상세 조회
-                .antMatchers(HttpMethod.GET, "/api/meetings/{\\d+}/attendants").permitAll() // 모임 참석자 리스트
-                .antMatchers(HttpMethod.GET, "/api/meetings/banner").permitAll() // 메인창 배너이미지
-                .antMatchers( "/alarm.html").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/alarm/subscribe/{\\d+}").permitAll()
-                .antMatchers(HttpMethod.GET, "/api/users/passwordChange").permitAll()
-                .antMatchers("/api/doc").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll() //스웨거 권한설정 X
-                .antMatchers("/swagger-resources/**").permitAll() //스웨거 권한설정 X
-                .antMatchers("/swagger-ui.html").permitAll() //스웨거 권한설정 X
-                .antMatchers("/v2/api-docs").permitAll() //스웨거 권한설정 X
-                .antMatchers("/v3/api-docs").permitAll() //스웨거 권한설정 X
-                .antMatchers("/webjars/**").permitAll() //스웨거 권한설정 X
+                .antMatchers( "/**").permitAll()
                 .anyRequest().authenticated()
                 //서버는 JWT 토큰을 검증하고 토큰의 정보를 사용하여 사용자의 인증을 진행해주는 Spring Security 에 등록한 JwtAuthFilter 를 사용하여 인증/인가를 처리한다.
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);
