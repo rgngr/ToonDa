@@ -40,12 +40,9 @@ public class UserService {
     // 회원가입
     @Transactional
     public void signup(SignupRequestDto requestDto) {
-
-        String email = requestDto.getEmail();
-        String username = requestDto.getUsername();
         String password = passwordEncoder.encode(requestDto.getPassword());
         
-        userRepository.save(new User(email, username, password));
+        userRepository.save(new User(requestDto, password));
 
     }
 
