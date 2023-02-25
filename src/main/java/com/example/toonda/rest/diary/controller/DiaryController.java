@@ -42,4 +42,11 @@ public class DiaryController {
         return ResponseDto.of(true, Code.UPDATE_DIARY);
     }
 
+    @ApiOperation(value = "다이어리 삭제")
+    @DeleteMapping("/diaries/{id}")
+    public ResponseDto deleteDiary(@PathVariable Long id) {
+        diaryService.deleteDiary(id);
+        return ResponseDto.of(true, Code.DELETE_DIARY);
+    }
+
 }

@@ -62,4 +62,8 @@ public class Diary extends TimeStamped {
         this.date = requestDto.getDate();
     }
 
+    public void deleteDiary() {
+        this.deleted = true;
+    }
+
 }
