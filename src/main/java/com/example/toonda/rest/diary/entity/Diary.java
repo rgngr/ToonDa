@@ -55,4 +55,11 @@ public class Diary extends TimeStamped {
         this.date = requestDto.getDate();
     }
 
+    public void updateDiary(DiaryRequestDto.Update requestDto) {
+        this.title = requestDto.getTitle();
+        this.subTitle = requestDto.getSubTitle();
+        this.content = requestDto.getContent();
+        this.date = requestDto.getDate();
+    }
+
 }

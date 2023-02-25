@@ -35,4 +35,11 @@ public class DiaryController {
         return DataResponseDto.of(diaryService.getDiaryUpdatePage(id), Code.GET_DIARY_UPDATE_PAGE.getStatusMsg());
     }
 
+    @ApiOperation(value = "다이어리 수정")
+    @PatchMapping("/diaries/{id}")
+    public ResponseDto updateDiary(@PathVariable Long id, @RequestBody @Valid DiaryRequestDto.Update requestDto) {
+        diaryService.updateDiary(id, requestDto);
+        return ResponseDto.of(true, Code.UPDATE_DIARY);
+    }
+
 }

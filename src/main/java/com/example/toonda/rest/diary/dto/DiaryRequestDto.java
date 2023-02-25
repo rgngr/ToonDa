@@ -25,4 +25,25 @@ public class DiaryRequestDto {
     @NotNull
     private LocalDate date;
 
+    @Getter
+    @NoArgsConstructor
+    @Schema(description = "다이어리 수정 request")
+    public static class Update {
+
+        @Schema(description = "제목")
+        @NotNull
+        private String title;
+
+        @Schema(description = "부제목")
+        private String subTitle;
+
+        @Schema(description = "내용")
+        private String content;
+
+        @Schema(description = "날짜")
+        @NotNull
+        private LocalDate date;
+
+    }
+
 }

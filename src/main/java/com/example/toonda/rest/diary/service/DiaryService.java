@@ -49,9 +49,25 @@ public class DiaryService {
 
         if (user.getId() != diary.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
+        } else {
+            return new DiaryResponseDto(user, diary);
+        }
+    }
+
+    @Transactional
+    public void updateDiary(Long id, DiaryRequestDto.Update requestDto) {
+        // 유저 확인
+        User user = SecurityUtil.getCurrentUser();
+        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+
+        Diary diary = diaryRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_DIARY));
+
+        if (user.getId() != diary.getUser().getId()) {
+            throw new RestApiException(Code.INVALID_USER);
+        } else {
+            diary.updateDiary(requestDto);
         }
 
-        return new DiaryResponseDto(user, diary);
     }
 
 }
