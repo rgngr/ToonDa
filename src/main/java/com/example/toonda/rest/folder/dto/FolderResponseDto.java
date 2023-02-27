@@ -37,4 +37,25 @@ public class FolderResponseDto {
         diaryList.add(responseDto);
     }
 
+    @Getter
+    public static class UpdatePage {
+        private Long folderId;
+        private Long writerId;
+        private String title;
+        private boolean open;
+        private String img;
+        private LocalDateTime createdAt;
+        private LocalDateTime modifiedAt;
+
+        public UpdatePage(Folder folder) {
+            this.folderId = folder.getId();
+            this.writerId = folder.getUser().getId();
+            this.title = folder.getTitle();
+            this.open = folder.isOpen();
+            this.img = folder.getImg();
+            this.createdAt = folder.getCreatedAt();
+            this.modifiedAt = folder.getModifiedAt();
+        }
+    }
+
 }

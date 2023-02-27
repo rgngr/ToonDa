@@ -49,10 +49,69 @@ public class FolderService {
         Folder folder = folderRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
         FolderResponseDto folderResponseDto = new FolderResponseDto(folder);
         List<Diary> diaries = diaryRepository.findByFolder(folder);
+        if (diaries == null) {
+            return folderResponseDto;
+        }
         for (Diary diary : diaries) {
             folderResponseDto.addDiary(new DiaryResponseDto(user,diary));
         }
         return folderResponseDto;
+    }
+
+    @Transactional(readOnly = true)
+    public FolderResponseDto.UpdatePage getFolderUpdatePage(Long id) {
+        // 유저 확인
+        User user = SecurityUtil.getCurrentUser();
+        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+
+        Folder folder = folderRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+
+        if (user.getId() != folder.getUser().getId()) {
+            throw new RestApiException(Code.INVALID_USER);
+        } else {
+            return (new FolderResponseDto.UpdatePage(folder));
+        }
+    }
+
+    @Transactional
+    public void updateFolder(Long id, FolderRequestDto.Update requestDto) {
+        // 유저 확인
+        User user = SecurityUtil.getCurrentUser();
+        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+
+        Folder folder = folderRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+
+        if (user.getId() != folder.getUser().getId()) {
+            throw new RestApiException(Code.INVALID_USER);
+        } else {
+            folder.updateFolder(requestDto);
+        }
+    }
+
+    @Transactional
+    public void deleteFolder(Long id) {
+        // 유저 확인
+        User user = SecurityUtil.getCurrentUser();
+        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+
+        Folder folder = folderRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+
+        if (user.getId() != folder.getUser().getId()) {
+            throw new RestApiException(Code.INVALID_USER);
+        } else {
+            String folderImg = folder.getImg();
+            s3Uploader.deleteFile(folderImg.split(".com/")[1]);
+
+            List<Diary> diaries = diaryRepository.findByFolder(folder);
+            if (diaries == null) {
+                folder.deleteFolder();
+            } else {
+                folder.deleteFolder();
+                for (Diary diary : diaries) {
+                    diary.deleteDiary();
+                }
+            }
+        }
     }
 
 }

@@ -43,4 +43,13 @@ public class Folder extends TimeStamped {
         this.img = img;
     }
 
+    public void updateFolder(FolderRequestDto.Update requestDto) {
+        this.title = requestDto.getTitle();
+        this.open = requestDto.isOpen();
+    }
+
+    public void deleteFolder() {
+        this.deleted = true;
+    }
+
 }
