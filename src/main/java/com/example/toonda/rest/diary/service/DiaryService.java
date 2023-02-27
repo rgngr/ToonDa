@@ -81,7 +81,10 @@ public class DiaryService {
         if (user.getId() != diary.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
         } else {
+            String diaryImg = diary.getImg();
+            s3Uploader.deleteFile(diaryImg.split(".com/")[1]);
             diary.deleteDiary();
+
         }
     }
 
