@@ -21,4 +21,17 @@ public class FolderRequestDto {
     @Schema(description = "공개 여부")
     private boolean open;
 
+    @Getter
+    @NoArgsConstructor
+    @Schema(description = "폴더 수정 request")
+    public static class Update {
+
+        @Schema(description = "제목")
+        @NotNull
+        private String title;
+
+        @Schema(description = "공개 여부")
+        private boolean open;
+    }
+
 }

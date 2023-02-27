@@ -26,13 +26,33 @@ public class FolderController {
     @PostMapping(value = "", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public ResponseDto createFolder(@RequestBody @Valid FolderRequestDto requestDto,
                                     @RequestPart(value = "file") MultipartFile img) throws IOException {
-        return DataResponseDto.of( folderService.createFolder(requestDto, img), Code.CREATE_FOLDER.getStatusMsg());
+        return DataResponseDto.of(folderService.createFolder(requestDto, img), Code.CREATE_FOLDER.getStatusMsg());
     }
 
     @ApiOperation(value = "폴더 불러오기")
     @GetMapping("/{id}")
     public ResponseDto getFolder(@PathVariable Long id) {
-        return DataResponseDto.of( folderService.getFolder(id), Code.CREATE_FOLDER.getStatusMsg());
+        return DataResponseDto.of(folderService.getFolder(id), Code.CREATE_FOLDER.getStatusMsg());
+    }
+
+    @ApiOperation(value = "GET 폴더 수정 페이지")
+    @GetMapping("/{id}/update-page")
+    public ResponseDto getFolderUpdatePage(@PathVariable Long id) {
+        return DataResponseDto.of(folderService.getFolderUpdatePage(id), Code.GET_FOLDER_UPDATE_PAGE.getStatusMsg());
+    }
+
+    @ApiOperation(value = "폴더 수정")
+    @PatchMapping("/{id}")
+    public ResponseDto updateFolder(@PathVariable Long id, @RequestBody @Valid FolderRequestDto.Update requestDto) {
+        folderService.updateFolder(id, requestDto);
+        return ResponseDto.of(true, Code.UPDATE_FOLDER);
+    }
+
+    @ApiOperation(value = "폴더 삭제")
+    @DeleteMapping("/{id}")
+    public ResponseDto deleteFolder(@PathVariable Long id) {
+        folderService.deleteFolder(id);
+        return ResponseDto.of(true, Code.DELETE_FOLDER);
     }
 
 }

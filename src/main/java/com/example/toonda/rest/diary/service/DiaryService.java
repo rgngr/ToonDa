@@ -39,7 +39,7 @@ public class DiaryService {
         return new DiaryResponseDto(user, diary);
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public DiaryResponseDto getDiaryUpdatePage(Long id) {
         // 유저 확인
         User user = SecurityUtil.getCurrentUser();
@@ -49,9 +49,43 @@ public class DiaryService {
 
         if (user.getId() != diary.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
+        } else {
+            return new DiaryResponseDto(user, diary);
+        }
+    }
+
+    @Transactional
+    public void updateDiary(Long id, DiaryRequestDto.Update requestDto) {
+        // 유저 확인
+        User user = SecurityUtil.getCurrentUser();
+        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+
+        Diary diary = diaryRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_DIARY));
+
+        if (user.getId() != diary.getUser().getId()) {
+            throw new RestApiException(Code.INVALID_USER);
+        } else {
+            diary.updateDiary(requestDto);
         }
 
-        return new DiaryResponseDto(user, diary);
+    }
+
+    @Transactional
+    public void deleteDiary(Long id) {
+        // 유저 확인
+        User user = SecurityUtil.getCurrentUser();
+        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+
+        Diary diary = diaryRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_DIARY));
+
+        if (user.getId() != diary.getUser().getId()) {
+            throw new RestApiException(Code.INVALID_USER);
+        } else {
+            String diaryImg = diary.getImg();
+            s3Uploader.deleteFile(diaryImg.split(".com/")[1]);
+            diary.deleteDiary();
+
+        }
     }
 
 }
