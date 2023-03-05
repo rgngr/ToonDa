@@ -13,9 +13,11 @@ public class FolderResponseDto {
     private Long folderId;
     private Long writerId;
     private String title;
-    private String category;
-    private boolean open;
     private String img;
+    private String hashtag1;
+    private String hashtag2;
+    private String hashtag3;
+    private boolean open;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private boolean deleted;
@@ -25,7 +27,9 @@ public class FolderResponseDto {
         this.folderId = folder.getId();
         this.writerId = folder.getUser().getId();
         this.title = folder.getTitle();
-        this.category = folder.getCategory();
+        this.hashtag1 = folder.getHashtag1();
+        this.hashtag2 = folder.getHashtag2();
+        this.hashtag3 = folder.getHashtag3();
         this.open = folder.isOpen();
         this.img = folder.getImg();
         this.createdAt = folder.getCreatedAt();
@@ -35,27 +39,6 @@ public class FolderResponseDto {
 
     public void addDiary(DiaryResponseDto responseDto) {
         diaryList.add(responseDto);
-    }
-
-    @Getter
-    public static class UpdatePage {
-        private Long folderId;
-        private Long writerId;
-        private String title;
-        private boolean open;
-        private String img;
-        private LocalDateTime createdAt;
-        private LocalDateTime modifiedAt;
-
-        public UpdatePage(Folder folder) {
-            this.folderId = folder.getId();
-            this.writerId = folder.getUser().getId();
-            this.title = folder.getTitle();
-            this.open = folder.isOpen();
-            this.img = folder.getImg();
-            this.createdAt = folder.getCreatedAt();
-            this.modifiedAt = folder.getModifiedAt();
-        }
     }
 
 }
