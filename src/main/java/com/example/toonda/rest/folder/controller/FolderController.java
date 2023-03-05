@@ -8,9 +8,8 @@ import com.example.toonda.rest.folder.service.FolderService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+
 import javax.validation.Valid;
 import java.io.IOException;
 
@@ -23,10 +22,9 @@ public class FolderController {
     private final FolderService folderService;
 
     @ApiOperation(value = "폴더 생성")
-    @PostMapping(value = "", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseDto createFolder(@RequestBody @Valid FolderRequestDto requestDto,
-                                    @RequestPart(value = "file") MultipartFile img) throws IOException {
-        return DataResponseDto.of(folderService.createFolder(requestDto, img), Code.CREATE_FOLDER.getStatusMsg());
+    @PostMapping("")
+    public ResponseDto createFolder(@ModelAttribute @Valid FolderRequestDto requestDto) throws IOException {
+        return DataResponseDto.of(folderService.createFolder(requestDto), Code.CREATE_FOLDER.getStatusMsg());
     }
 
     @ApiOperation(value = "폴더 불러오기")
@@ -43,7 +41,7 @@ public class FolderController {
 
     @ApiOperation(value = "폴더 수정")
     @PatchMapping("/{id}")
-    public ResponseDto updateFolder(@PathVariable Long id, @RequestBody @Valid FolderRequestDto.Update requestDto) {
+    public ResponseDto updateFolder(@PathVariable Long id, @ModelAttribute @Valid FolderRequestDto.Update requestDto) throws IOException {
         folderService.updateFolder(id, requestDto);
         return ResponseDto.of(true, Code.UPDATE_FOLDER);
     }

@@ -15,7 +15,6 @@ import com.example.toonda.rest.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
@@ -28,12 +27,12 @@ public class FolderService {
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public FolderResponseDto createFolder(FolderRequestDto requestDto, MultipartFile img) throws IOException {
+    public FolderResponseDto createFolder(FolderRequestDto requestDto) throws IOException {
         // 유저 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
-        String folderImg = s3Uploader.upload(img, "file");
+        String folderImg = s3Uploader.upload(requestDto.getImg(), "file");
         Folder folder = folderRepository.save(new Folder(user, requestDto, folderImg));
 
         return new FolderResponseDto(folder);
@@ -59,7 +58,7 @@ public class FolderService {
     }
 
     @Transactional(readOnly = true)
-    public FolderResponseDto.UpdatePage getFolderUpdatePage(Long id) {
+    public FolderResponseDto getFolderUpdatePage(Long id) {
         // 유저 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -69,12 +68,12 @@ public class FolderService {
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
         } else {
-            return (new FolderResponseDto.UpdatePage(folder));
+            return (new FolderResponseDto(folder));
         }
     }
 
     @Transactional
-    public void updateFolder(Long id, FolderRequestDto.Update requestDto) {
+    public void updateFolder(Long id, FolderRequestDto.Update requestDto) throws IOException {
         // 유저 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -84,7 +83,16 @@ public class FolderService {
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
         } else {
-            folder.updateFolder(requestDto);
+            String currentImg = folder.getImg();
+            String updateImg;
+
+            if (requestDto.getImg().isEmpty()) {
+                updateImg = currentImg;
+            } else {
+                updateImg = s3Uploader.upload(requestDto.getImg(), "file");
+            }
+
+            folder.updateFolder(requestDto, updateImg);
         }
     }
 
