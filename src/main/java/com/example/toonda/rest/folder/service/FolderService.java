@@ -107,6 +107,7 @@ public class FolderService {
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
         } else {
+
             String folderImg = folder.getImg();
             s3Uploader.deleteFile(folderImg.split(".com/")[1]);
 
