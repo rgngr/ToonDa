@@ -45,7 +45,7 @@ public class FolderService {
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
-        Folder folder = folderRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
         FolderResponseDto folderResponseDto = new FolderResponseDto(folder);
         List<Diary> diaries = diaryRepository.findByFolder(folder);
         if (diaries == null) {
