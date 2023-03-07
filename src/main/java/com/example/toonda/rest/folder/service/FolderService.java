@@ -46,15 +46,19 @@ public class FolderService {
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
         Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
-        FolderResponseDto folderResponseDto = new FolderResponseDto(folder);
-        List<Diary> diaries = diaryRepository.findByFolder(folder);
-        if (diaries == null) {
+        if (folder.isOpen() || (!folder.isOpen() && (user.getId() == folder.getUser().getId()))) {
+            FolderResponseDto folderResponseDto = new FolderResponseDto(folder);
+            List<Diary> diaries = diaryRepository.findByFolder(folder);
+            if (diaries == null) {
+                return folderResponseDto;
+            }
+            for (Diary diary : diaries) {
+                folderResponseDto.addDiary(new DiaryResponseDto(user,diary));
+            }
             return folderResponseDto;
+        } else {
+         throw new RestApiException(Code.NO_FOLDER);
         }
-        for (Diary diary : diaries) {
-            folderResponseDto.addDiary(new DiaryResponseDto(user,diary));
-        }
-        return folderResponseDto;
     }
 
     @Transactional(readOnly = true)
