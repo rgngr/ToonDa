@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface DiaryRepository extends JpaRepository<Diary, Long> {
     List<Diary> findByFolder(Folder folder);
+
+    List<Diary> findByFolderAndDeletedIsFalse(Folder folder);
 }

@@ -48,7 +48,7 @@ public class FolderService {
         Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
         if (folder.isOpen() || (!folder.isOpen() && (user.getId() == folder.getUser().getId()))) {
             FolderResponseDto folderResponseDto = new FolderResponseDto(folder);
-            List<Diary> diaries = diaryRepository.findByFolder(folder);
+            List<Diary> diaries = diaryRepository.findByFolderAndDeletedIsFalse(folder);
             if (diaries == null) {
                 return folderResponseDto;
             }
