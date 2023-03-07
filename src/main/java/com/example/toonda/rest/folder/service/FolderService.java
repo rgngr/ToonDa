@@ -67,7 +67,7 @@ public class FolderService {
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
-        Folder folder = folderRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
 
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
@@ -82,7 +82,7 @@ public class FolderService {
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
-        Folder folder = folderRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
 
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
@@ -106,7 +106,7 @@ public class FolderService {
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
-        Folder folder = folderRepository.findById(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
 
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
