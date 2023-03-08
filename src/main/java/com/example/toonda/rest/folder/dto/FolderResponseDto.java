@@ -21,7 +21,7 @@ public class FolderResponseDto {
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
     private boolean deleted;
-    private List<DiaryResponseDto> diaryList = new ArrayList<>();;
+    private List<DiaryResponseDto> diaryList = new ArrayList<>();
 
     public FolderResponseDto(Folder folder) {
         this.folderId = folder.getId();
@@ -39,6 +39,15 @@ public class FolderResponseDto {
 
     public void addDiary(DiaryResponseDto responseDto) {
         diaryList.add(responseDto);
+    }
+
+    @Getter
+    public static class Title {
+        private String title;
+
+        public Title(Folder folder) {
+            this.title = folder.getTitle();
+        }
     }
 
 }
