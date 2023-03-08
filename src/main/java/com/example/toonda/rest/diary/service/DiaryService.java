@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,14 +27,14 @@ public class DiaryService {
     private final S3Uploader s3Uploader;
 
     @Transactional
-    public DiaryResponseDto createDiary(Long folderId, DiaryRequestDto requestDto, MultipartFile img) throws IOException {
+    public DiaryResponseDto createDiary(Long folderId, DiaryRequestDto requestDto) throws IOException {
         // 유저 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
         Folder folder = folderRepository.findById(folderId).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
 
-        String diaryImg = s3Uploader.upload(img, "file");
+        String diaryImg = s3Uploader.upload(requestDto.getImg(), "file");
         Diary diary = diaryRepository.save(new Diary(user, folder, requestDto, diaryImg));
 
         return new DiaryResponseDto(user, diary);
@@ -88,4 +89,12 @@ public class DiaryService {
         }
     }
 
+//    @Transactional(readOnly = true)
+//    public DiaryResponseDto.Folders getFolders() {
+//        // 유저 확인
+//        User user = SecurityUtil.getCurrentUser();
+//        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+//
+//        List<Folder> folders = folderRepository.findByUser(user)
+//    }
 }

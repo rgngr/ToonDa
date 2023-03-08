@@ -31,9 +31,6 @@ public class Diary extends TimeStamped {
     private String title;
 
     @Column
-    private String subTitle;
-
-    @Column
     private String content;
 
     @Column(nullable = false)
@@ -49,7 +46,6 @@ public class Diary extends TimeStamped {
         this.user = user;
         this.folder = folder;
         this.title = requestDto.getTitle();
-        this.subTitle = requestDto.getSubTitle();
         this.content = requestDto.getContent();
         this.img = img;
         this.date = requestDto.getDate();
@@ -57,7 +53,6 @@ public class Diary extends TimeStamped {
 
     public void updateDiary(DiaryRequestDto.Update requestDto) {
         this.title = requestDto.getTitle();
-        this.subTitle = requestDto.getSubTitle();
         this.content = requestDto.getContent();
         this.date = requestDto.getDate();
     }

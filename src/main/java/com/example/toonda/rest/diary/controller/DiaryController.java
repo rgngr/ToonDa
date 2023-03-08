@@ -23,10 +23,9 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @ApiOperation(value = "다이어리 생성")
-    @PostMapping(value = "/{folderId}/diaries", consumes={MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public ResponseDto createDiary(@PathVariable Long folderId, @RequestPart @Valid DiaryRequestDto requestDto,
-                                   @RequestPart(value = "file") MultipartFile img) throws IOException {
-        return DataResponseDto.of(diaryService.createDiary(folderId, requestDto, img), Code.CREATE_DIARY.getStatusMsg());
+    @PostMapping(value = "/{folderId}/diaries")
+    public ResponseDto createDiary(@PathVariable Long folderId, @ModelAttribute @Valid DiaryRequestDto requestDto) throws IOException {
+        return DataResponseDto.of(diaryService.createDiary(folderId, requestDto), Code.CREATE_DIARY.getStatusMsg());
     }
 
 //    @ApiOperation(value = "폴더 선택")
