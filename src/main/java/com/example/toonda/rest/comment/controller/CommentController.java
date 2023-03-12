@@ -19,7 +19,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
-    @ApiOperation("댓글 생성")
+    @ApiOperation("댓글 작성")
     @PostMapping("/{diaryId}/comments")
     public ResponseDto createComment(@PathVariable Long diaryId,
                                      @RequestBody @Valid CommentRequestDto requestDto) {

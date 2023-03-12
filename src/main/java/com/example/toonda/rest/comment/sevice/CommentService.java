@@ -12,6 +12,7 @@ import com.example.toonda.rest.comment.repository.CommentRepository;
 import com.example.toonda.rest.comment.repository.RecommentRepository;
 import com.example.toonda.rest.diary.entity.Diary;
 import com.example.toonda.rest.diary.repository.DiaryRepository;
+import com.example.toonda.rest.folder.entity.Folder;
 import com.example.toonda.rest.folder.repository.FolderRepository;
 import com.example.toonda.rest.like.repository.LikeRepository;
 import com.example.toonda.rest.user.entity.User;
@@ -39,11 +40,10 @@ public class CommentService {
         // 다이어리 존재 여부 확인
         Diary diary = diaryRepository.findByIdAndDeletedFalse(diaryId).orElseThrow(() -> new RestApiException(Code.NO_DIARY));
         // 폴더 존재 여부 확인
-        boolean folderDeleted = folderRepository.existsByIdAndDeletedFalse(diary.getFolder().getId());
-        if (!folderDeleted) throw new RestApiException(Code.NO_FOLDER);
+        Folder folder = folderRepository.getAliveFolder(diary.getFolder().getId()).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
         // 차단 여부 확인
-        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(diary.getUser(), user);
-        if (isBlocked) throw new RestApiException(Code.NO_USER);
+        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(folder.getUser(), user);
+        if (isBlocked) throw new RestApiException(Code.NO_FOLDER);
         // 댓글 생성
         Comment comment = commentRepository.save(new Comment(user, diary, requestDto));
         // 댓글 작성 response 생성
@@ -59,14 +59,13 @@ public class CommentService {
         // 다이어리 존재 여부 확인
         Diary diary = diaryRepository.findByIdAndDeletedFalse(diaryId).orElseThrow(() -> new RestApiException(Code.NO_DIARY));
         // 폴더 존재 여부 확인
-        boolean folderDeleted = folderRepository.existsByIdAndDeletedFalse(diary.getFolder().getId());
-        if (!folderDeleted) throw new RestApiException(Code.NO_FOLDER);
+        Folder folder = folderRepository.getAliveFolder(diary.getFolder().getId()).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
         // 차단 여부 확인
-        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(diary.getUser(), user);
-        if (isBlocked) throw new RestApiException(Code.NO_USER);
+        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(folder.getUser(), user);
+        if (isBlocked) throw new RestApiException(Code.NO_FOLDER);
         // 댓글 리스트 생성
         CommentListResponseDto commentListResponseDto = new CommentListResponseDto();
-        List<Comment> comments = commentRepository.getCommentList(diary);
+        List<Comment> comments = commentRepository.getCommentList(diary, user);
         // null 이면 괜찮나......? 확인필요!!!
         for (Comment comment : comments) {
             boolean isLike = likeRepository.existsByUserAndComment(user, comment);
@@ -85,19 +84,19 @@ public class CommentService {
         // 댓글 존재 여부 확인
         Comment comment = commentRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new RestApiException(Code.NO_COMMENT));
         // 다이어리 존재 여부 확인
-        boolean diaryDeleted = diaryRepository.existsByIdAndDeletedFalse(comment.getDiary().getId());
-        if (!diaryDeleted) throw new RestApiException(Code.NO_DIARY);
+        boolean diaryExistence = diaryRepository.existsByIdAndDeletedFalse(comment.getDiary().getId());
+        if (!diaryExistence) throw new RestApiException(Code.NO_DIARY);
         // 폴더 존재 여부 확인
-        boolean folderDeleted = folderRepository.existsByIdAndDeletedFalse(comment.getDiary().getFolder().getId());
-        if (!folderDeleted) throw new RestApiException(Code.NO_FOLDER);
+        Folder folder = folderRepository.getAliveFolder(comment.getDiary().getFolder().getId()).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
         // 차단 여부 확인
-        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(comment.getDiary().getUser(), user);
-        if (isBlocked) throw new RestApiException(Code.NO_USER);
+        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(folder.getUser(), user);
+        if (isBlocked) throw new RestApiException(Code.NO_FOLDER);
         // 댓글 삭제
-        if (user.getId() == comment.getDiary().getUser().getId()) { // 다이어라 작성자가 삭제 >> deleted = true
+        if (user.getId() == folder.getUser().getId()) { // 다이어리 작성자가 삭제 >> deleted = true
             comment.deleteComment();
         } else if (user.getId() == comment.getUser().getId()) {
-            Long recommentNum = recommentRepository.countByCommentAndDeletedFalse(comment);
+            if (comment.isRecommented()) throw new RestApiException(Code.NO_COMMENT); // recommented 처리 여부 확인
+            Long recommentNum = recommentRepository.countByCommentAndDeletedFalse(comment); // 대댓글 개수
             if (recommentNum == 0) { // 댓글 작성자 + 대댓글 없음 >> deleted = true
                 comment.deleteComment();
             } else { // 댓글 작성자 + 대댓글 존재 >> recommented = true
