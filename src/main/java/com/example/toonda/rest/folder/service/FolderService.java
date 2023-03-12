@@ -12,6 +12,7 @@ import com.example.toonda.rest.folder.dto.FolderRequestDto;
 import com.example.toonda.rest.folder.dto.FolderResponseDto;
 import com.example.toonda.rest.folder.dto.HashtagResponseDto;
 import com.example.toonda.rest.folder.entity.Folder;
+import com.example.toonda.rest.folder.entity.Hashtag;
 import com.example.toonda.rest.folder.repository.HashtagRepository;
 import com.example.toonda.rest.folder.repository.FolderRepository;
 import com.example.toonda.rest.user.entity.User;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -39,6 +41,13 @@ public class FolderService {
 
         String folderImg = s3Uploader.upload(requestDto.getImg(), "file");
         Folder folder = folderRepository.save(new Folder(user, requestDto, folderImg));
+        // 해시태그
+        Hashtag h1 = new Hashtag(folder, requestDto.getHashtags().get(0));
+        Hashtag h2 = new Hashtag(folder, requestDto.getHashtags().get(1));
+        Hashtag h3 = new Hashtag(folder, requestDto.getHashtags().get(2));
+        List<Hashtag> hashtags = Arrays.asList(h1, h2, h3);
+        hashtagRepository.saveAll(hashtags);
+
 
         return new FolderResponseDto(folder);
 
@@ -110,6 +119,12 @@ public class FolderService {
             }
 
             folder.updateFolder(requestDto, updateImg);
+            // 해시태그
+            Hashtag h1 = new Hashtag(folder, requestDto.getHashtags().get(0));
+            Hashtag h2 = new Hashtag(folder, requestDto.getHashtags().get(1));
+            Hashtag h3 = new Hashtag(folder, requestDto.getHashtags().get(2));
+            List<Hashtag> hashtags = Arrays.asList(h1, h2, h3);
+            hashtagRepository.saveAll(hashtags);
         }
     }
 
