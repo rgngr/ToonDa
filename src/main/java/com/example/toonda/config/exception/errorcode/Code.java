@@ -4,7 +4,6 @@ import com.example.toonda.config.exception.RestApiException;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -17,12 +16,17 @@ public enum Code {
     FILE_SAVE_FAIL("파일 저장에 실패하였습니다.", HttpStatus.INTERNAL_SERVER_ERROR),
     WRONG_IMAGE_FORMAT("지원하지 않는 파일 형식입니다.", HttpStatus.BAD_REQUEST),
     DELETE_COMMENT( "댓글 삭제 성공", HttpStatus.OK),
+    DELETE_RECOMMENT( "대댓글 삭제 성공", HttpStatus.OK),
     DELETED_COMMENT( "삭제된 댓글입니다.", HttpStatus.OK),
     CREATE_COMMENT( "댓글 작성 성공", HttpStatus.OK),
     UPDATE_COMMENT( "댓글 수정 성공", HttpStatus.OK),
     CREATE_FOLDER( "폴더 생성 성공", HttpStatus.OK),
     CREATE_DIARY( "다이어리 생성 성공", HttpStatus.OK),
+    CREATE_RECOMMENT( "대댓글 작성 성공", HttpStatus.OK),
     UPDATE_FOLDER( "폴더 수정 성공", HttpStatus.OK),
+    GET_FOLDER_LIST("폴더 리스트 불러오기 성공", HttpStatus.OK ),
+    GET_COMMENT_LIST("댓글 리스트 불러오기 성공", HttpStatus.OK ),
+    GET_RECOMMENT_LIST("대댓글 리스트 불러오기 성공", HttpStatus.OK ),
     UPDATE_DIARY( "다이어리 수정 성공", HttpStatus.OK),
     GET_DIARY_UPDATE_PAGE( "다이어리 수정 페이지 불러오기 성공", HttpStatus.OK),
     GET_FOLDER_UPDATE_PAGE( "폴더 수정 페이지 불러오기 성공", HttpStatus.OK),
@@ -40,7 +44,8 @@ public enum Code {
     BAD_REQUEST("Bad request",HttpStatus.BAD_REQUEST),
     NO_FOLDER("해당 폴더가 존재하지 않습니다", HttpStatus.NOT_FOUND),
     NO_DIARY("해당 다이어리가 존재하지 않습니다", HttpStatus.NOT_FOUND),
-    NO_COMMENT("댓글이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    NO_COMMENT("해당 댓글이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
+    NO_RECOMMENT("해당 대댓글이 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     NO_ATTENDANT("해당 모임에 찾으시는 참석자가 존재하지 않습니다.", HttpStatus.NOT_FOUND),
     INVALID_USER("작성자만 수정/삭제할 수 있습니다.", HttpStatus.BAD_REQUEST),
     INVALID_USER_DELETE("작성자만 할 수 있습니다.", HttpStatus.BAD_REQUEST),
