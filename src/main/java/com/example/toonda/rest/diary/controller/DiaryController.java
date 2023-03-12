@@ -8,9 +8,7 @@ import com.example.toonda.rest.diary.service.DiaryService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 
@@ -23,7 +21,7 @@ public class DiaryController {
     private final DiaryService diaryService;
 
     @ApiOperation(value = "다이어리 생성")
-    @PostMapping(value = "/{folderId}/diaries")
+    @PostMapping( "/{folderId}/diaries")
     public ResponseDto createDiary(@PathVariable Long folderId, @ModelAttribute @Valid DiaryRequestDto requestDto) throws IOException {
         return DataResponseDto.of(diaryService.createDiary(folderId, requestDto), Code.CREATE_DIARY.getStatusMsg());
     }
