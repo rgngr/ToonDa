@@ -1,0 +1,34 @@
+package com.example.toonda.rest.comment.dto;
+
+import com.example.toonda.rest.comment.entity.Recomment;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import java.time.LocalDateTime;
+
+@Getter
+@Schema(description = "대댓글 response")
+public class RecommentResponseDto {
+
+    private Long recommentId;
+    private Long userId;
+    private String userImg;
+    private String username;
+    private String recomment;
+    private boolean isLike;
+    private boolean isDeleted;
+    private Long likeNum;
+    private LocalDateTime createdAt;
+
+    public RecommentResponseDto(Recomment recomment, boolean isLike, Long likeNum) {
+        this.recommentId = recomment.getId();
+        this.userId = recomment.getUser().getId();
+        this.userImg = recomment.getUser().getImg();
+        this.username = recomment.getUser().getUsername();
+        this.recomment = recomment.getRecomment();
+        this.isLike = isLike;
+        this.isDeleted = recomment.isDeleted();
+        this.likeNum = likeNum;
+        this.createdAt = recomment.getCreatedAt();
+    }
+
+}
