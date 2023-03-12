@@ -46,4 +46,7 @@ public class UserController {
         return DataResponseDto.of( userService.login(requestDto, response), Code.USER_LOGIN_SUCCESS.getStatusMsg());
     }
 
+//    @ApiOperation(value = "마이페이지 (폴더 리스트)")
+//    @GetMapping("{username}/folders")
+
 }
