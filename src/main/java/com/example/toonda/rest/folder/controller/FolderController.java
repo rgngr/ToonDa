@@ -21,32 +21,32 @@ public class FolderController {
 
     private final FolderService folderService;
 
-    @ApiOperation(value = "폴더 생성")
+    @ApiOperation("폴더 생성")
     @PostMapping("")
     public ResponseDto createFolder(@ModelAttribute @Valid FolderRequestDto requestDto) throws IOException {
         return DataResponseDto.of(folderService.createFolder(requestDto), Code.CREATE_FOLDER.getStatusMsg());
     }
 
-    @ApiOperation(value = "폴더 불러오기")
+    @ApiOperation("폴더 불러오기")
     @GetMapping("/{id}")
     public ResponseDto getFolder(@PathVariable Long id) {
         return DataResponseDto.of(folderService.getFolder(id), Code.CREATE_FOLDER.getStatusMsg());
     }
 
-    @ApiOperation(value = "GET 폴더 수정 페이지")
+    @ApiOperation("GET 폴더 수정 페이지")
     @GetMapping("/{id}/update-page")
     public ResponseDto getFolderUpdatePage(@PathVariable Long id) {
         return DataResponseDto.of(folderService.getFolderUpdatePage(id), Code.GET_FOLDER_UPDATE_PAGE.getStatusMsg());
     }
 
-    @ApiOperation(value = "폴더 수정")
+    @ApiOperation("폴더 수정")
     @PatchMapping("/{id}")
     public ResponseDto updateFolder(@PathVariable Long id, @ModelAttribute @Valid FolderRequestDto.Update requestDto) throws IOException {
         folderService.updateFolder(id, requestDto);
         return ResponseDto.of(true, Code.UPDATE_FOLDER);
     }
 
-    @ApiOperation(value = "폴더 삭제")
+    @ApiOperation("폴더 삭제")
     @DeleteMapping("/{id}")
     public ResponseDto deleteFolder(@PathVariable Long id) {
         folderService.deleteFolder(id);
