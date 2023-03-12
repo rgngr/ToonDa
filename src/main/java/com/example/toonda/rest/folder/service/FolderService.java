@@ -4,12 +4,15 @@ import com.example.toonda.config.exception.RestApiException;
 import com.example.toonda.config.exception.errorcode.Code;
 import com.example.toonda.config.s3.S3Uploader;
 import com.example.toonda.config.security.SecurityUtil;
+import com.example.toonda.rest.block.repository.BlockRepository;
 import com.example.toonda.rest.diary.dto.DiaryResponseDto;
 import com.example.toonda.rest.diary.entity.Diary;
 import com.example.toonda.rest.diary.repository.DiaryRepository;
 import com.example.toonda.rest.folder.dto.FolderRequestDto;
 import com.example.toonda.rest.folder.dto.FolderResponseDto;
+import com.example.toonda.rest.folder.dto.HashtagResponseDto;
 import com.example.toonda.rest.folder.entity.Folder;
+import com.example.toonda.rest.folder.repository.HashtagRepository;
 import com.example.toonda.rest.folder.repository.FolderRepository;
 import com.example.toonda.rest.user.entity.User;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,8 @@ public class FolderService {
     private final FolderRepository folderRepository;
     private final DiaryRepository diaryRepository;
     private final S3Uploader s3Uploader;
+    private final HashtagRepository hashtagRepository;
+    private final BlockRepository blockRepository;
 
     @Transactional
     public FolderResponseDto createFolder(FolderRequestDto requestDto) throws IOException {
@@ -44,14 +49,22 @@ public class FolderService {
         // 유저 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
-
-        Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        // 폴더 존재 여부 확인
+        Folder folder = folderRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        // 차단 여부 확인
+        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(folder.getUser(), user);
+        if (isBlocked) throw new RestApiException(Code.NO_FOLDER);
+        // 공개 여부 + 작성자 여부에 따른 경우의 수
         if (folder.isOpen() || (!folder.isOpen() && (user.getId() == folder.getUser().getId()))) {
+            // 폴더 response 생성
             FolderResponseDto folderResponseDto = new FolderResponseDto(folder);
-            List<Diary> diaries = diaryRepository.findByFolderAndDeletedIsFalse(folder);
-            if (diaries == null) {
-                return folderResponseDto;
+            // 해시태그 붙이기
+            List<String> hashtags = hashtagRepository.findAllByFolder(folder);
+            for (String hashtag : hashtags) {
+                folderResponseDto.addHashtag(new HashtagResponseDto(hashtag));
             }
+            // 다이어리 붙이기
+            List<Diary> diaries = diaryRepository.findByFolderAndDeletedFalse(folder);
             for (Diary diary : diaries) {
                 folderResponseDto.addDiary(new DiaryResponseDto(user,diary));
             }
@@ -67,7 +80,7 @@ public class FolderService {
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
-        Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        Folder folder = folderRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
 
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
@@ -82,7 +95,7 @@ public class FolderService {
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
-        Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        Folder folder = folderRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
 
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
@@ -106,7 +119,7 @@ public class FolderService {
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
 
-        Folder folder = folderRepository.findByIdAndDeletedIsFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        Folder folder = folderRepository.findByIdAndDeletedFalse(id).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
 
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
