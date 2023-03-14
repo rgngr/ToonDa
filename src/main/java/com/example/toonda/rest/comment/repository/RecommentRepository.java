@@ -22,4 +22,7 @@ public interface RecommentRepository extends JpaRepository<Recomment, Long> {
     @Query(value = "select r from Recomment r " +
             "where r.comment= :comment and r.id > :id and r.deleted=false and r.rrecommented=false ")
     Optional<Recomment> getLaterThanIdRecomment(@Param("comment")Comment comment, @Param("id")Long id);
+
+    @Query(value = "select r from Recomment r where r.id= :id and r.deleted=false and r.rrecommented=false ")
+    Optional<Recomment> getAliveRecomment(@Param("id")Long id);
 }
