@@ -112,9 +112,10 @@ public class FolderService {
             String currentImg = folder.getImg();
             String updateImg;
 
-            if (requestDto.getImg().isEmpty()) {
+            if (requestDto.getImg()==null) {
                 updateImg = currentImg;
             } else {
+                s3Uploader.deleteFile(currentImg.split(".com/")[1]);
                 updateImg = s3Uploader.upload(requestDto.getImg(), "file");
             }
 
