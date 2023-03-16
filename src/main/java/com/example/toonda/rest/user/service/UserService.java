@@ -26,24 +26,24 @@ public class UserService {
     // 이메일 중복 확인
     @Transactional(readOnly = true)
     public ResponseDto emailCheck(String email) {
-        boolean isExistEmail = userRepository.existsByEmail(email);
-        return ResponseDto.of(isExistEmail, Code.EMAIL_CHECK_SUCCESS);
+        // deleted 상관 없이 존재 여부 확인
+        boolean emailExistence = userRepository.existsByEmail(email);
+        return ResponseDto.of(emailExistence, Code.EMAIL_CHECK);
     }
 
     // 유저네임 중복 확인
     @Transactional(readOnly = true)
     public ResponseDto usernameCheck(String username) {
-        boolean isExistUsername = userRepository.existsByUsername(username);
-        return ResponseDto.of(isExistUsername, Code.USERNAME_CHECK_SUCCESS);
+        // deleted 상관 없이 존재 여부 확인
+        boolean usernameExistence = userRepository.existsByUsername(username);
+        return ResponseDto.of(usernameExistence, Code.USERNAME_CHECK);
     }
 
     // 회원가입
     @Transactional
     public void signup(SignupRequestDto requestDto) {
         String password = passwordEncoder.encode(requestDto.getPassword());
-        
         userRepository.save(new User(requestDto, password));
-
     }
 
     // 로그인

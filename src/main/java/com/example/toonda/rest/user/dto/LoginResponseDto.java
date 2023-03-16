@@ -10,12 +10,12 @@ public class LoginResponseDto {
 
     private Long userId;
     private String username;
-    private String img;
+    private String userImg;
 
     public LoginResponseDto(User user) {
         this.userId = user.getId();
         this.username = user.getUsername();
-        this.img = user.getImg();
+        this.userImg = user.getImg();
     }
 
 }

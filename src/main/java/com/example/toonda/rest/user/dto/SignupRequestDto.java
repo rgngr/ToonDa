@@ -17,6 +17,7 @@ public class SignupRequestDto {
 
     @Schema(description = "유저네임")
     @Size(min = 2, max = 10)
+    @NotBlank
     private String username;
 
     @Schema (description = "패스워드")
