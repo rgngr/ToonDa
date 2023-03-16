@@ -16,34 +16,34 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-@Tag(name = "users", description = "회원가입, 로그인 관련 API")
+@Tag(name = "users", description = "회원가입/로그인, 프로필 관련 API")
 public class UserController {
 
     private final UserService userService;
 
-    @ApiOperation(value = "이메일 중복 확인")
+    @ApiOperation("이메일 중복 확인")
     @GetMapping("/email-check/{email}")
     public ResponseDto emailCheck(@PathVariable String email) {
         return userService.emailCheck(email);
     }
 
-    @ApiOperation(value = "유저네임 중복 확인")
+    @ApiOperation("유저네임 중복 확인")
     @GetMapping("/username-check/{username}")
     public ResponseDto usernameCheck(@PathVariable String username) {
         return userService.usernameCheck(username);
     }
 
-    @ApiOperation(value = "회원가입")
+    @ApiOperation("회원가입")
     @PostMapping("/signup")
     public ResponseDto signup(@RequestBody @Valid SignupRequestDto requestDto) {
         userService.signup(requestDto);
-        return ResponseDto.of(true, Code.USER_SIGNUP_SUCCESS);
+        return ResponseDto.of(true, Code.SIGNUP_SUCCESS);
     }
 
-    @ApiOperation(value = "로그인")
+    @ApiOperation("로그인")
     @PostMapping("/login")
     public ResponseDto login(@RequestBody @Valid LoginRequestDto requestDto, HttpServletResponse response) {
-        return DataResponseDto.of( userService.login(requestDto, response), Code.USER_LOGIN_SUCCESS.getStatusMsg());
+        return DataResponseDto.of( userService.login(requestDto, response), Code.LOGIN_SUCCESS.getStatusMsg());
     }
 
 //    @ApiOperation(value = "마이페이지 (폴더 리스트)")

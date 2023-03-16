@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
     List<String> findAllByFolder(Folder folder);
+
+    boolean existsByFolderAndHashtag(Folder folder, String s);
 }

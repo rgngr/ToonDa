@@ -12,6 +12,7 @@ import com.example.toonda.rest.folder.dto.FolderRequestDto;
 import com.example.toonda.rest.folder.dto.FolderResponseDto;
 import com.example.toonda.rest.folder.dto.HashtagResponseDto;
 import com.example.toonda.rest.folder.entity.Folder;
+import com.example.toonda.rest.folder.entity.Hashtag;
 import com.example.toonda.rest.folder.repository.HashtagRepository;
 import com.example.toonda.rest.folder.repository.FolderRepository;
 import com.example.toonda.rest.user.entity.User;
@@ -19,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -39,6 +41,22 @@ public class FolderService {
 
         String folderImg = s3Uploader.upload(requestDto.getImg(), "file");
         Folder folder = folderRepository.save(new Folder(user, requestDto, folderImg));
+        // 해시태그
+        if (requestDto.getHashtags().size()==1) {
+            Hashtag h1 = new Hashtag(folder, requestDto.getHashtags().get(0));
+            hashtagRepository.save(h1);
+        } else if (requestDto.getHashtags().size()==2) {
+            Hashtag h1 = new Hashtag(folder, requestDto.getHashtags().get(0));
+            Hashtag h2 = new Hashtag(folder, requestDto.getHashtags().get(1));
+            List<Hashtag> hashtags = Arrays.asList(h1, h2);
+            hashtagRepository.saveAll(hashtags);
+        } else if (requestDto.getHashtags().size()==3) {
+            Hashtag h1 = new Hashtag(folder, requestDto.getHashtags().get(0));
+            Hashtag h2 = new Hashtag(folder, requestDto.getHashtags().get(1));
+            Hashtag h3 = new Hashtag(folder, requestDto.getHashtags().get(2));
+            List<Hashtag> hashtags = Arrays.asList(h1, h2, h3);
+            hashtagRepository.saveAll(hashtags);
+        }
 
         return new FolderResponseDto(folder);
 
@@ -85,7 +103,14 @@ public class FolderService {
         if (user.getId() != folder.getUser().getId()) {
             throw new RestApiException(Code.INVALID_USER);
         } else {
-            return (new FolderResponseDto(folder));
+            // 폴더 response 생성
+            FolderResponseDto folderResponseDto = new FolderResponseDto(folder);
+            // 해시태그 붙이기
+            List<String> hashtags = hashtagRepository.findAllByFolder(folder);
+            for (String hashtag : hashtags) {
+                folderResponseDto.addHashtag(new HashtagResponseDto(hashtag));
+            }
+            return folderResponseDto;
         }
     }
 
@@ -103,13 +128,49 @@ public class FolderService {
             String currentImg = folder.getImg();
             String updateImg;
 
-            if (requestDto.getImg().isEmpty()) {
+            if (requestDto.getImg()==null) {
                 updateImg = currentImg;
             } else {
+                s3Uploader.deleteFile(currentImg.split(".com/")[1]);
                 updateImg = s3Uploader.upload(requestDto.getImg(), "file");
             }
 
             folder.updateFolder(requestDto, updateImg);
+            // 해시태그
+            if (requestDto.getHashtags().size()==1) {
+                boolean h1Existence = hashtagRepository.existsByFolderAndHashtag(folder, requestDto.getHashtags().get(0));
+                if (!h1Existence) {
+                    Hashtag h1 = new Hashtag(folder, requestDto.getHashtags().get(0));
+                    hashtagRepository.save(h1);
+                }
+            } else if (requestDto.getHashtags().size()==2) {
+                boolean h1Existence = hashtagRepository.existsByFolderAndHashtag(folder, requestDto.getHashtags().get(0));
+                if (!h1Existence) {
+                    Hashtag h1 = new Hashtag(folder, requestDto.getHashtags().get(0));
+                    hashtagRepository.save(h1);
+                }
+                boolean h2Existence = hashtagRepository.existsByFolderAndHashtag(folder, requestDto.getHashtags().get(1));
+                if (!h2Existence) {
+                    Hashtag h2 = new Hashtag(folder, requestDto.getHashtags().get(1));
+                    hashtagRepository.save(h2);
+                }
+            } else if (requestDto.getHashtags().size()==3) {
+                boolean h1Existence = hashtagRepository.existsByFolderAndHashtag(folder, requestDto.getHashtags().get(0));
+                if (!h1Existence) {
+                    Hashtag h1 = new Hashtag(folder, requestDto.getHashtags().get(0));
+                    hashtagRepository.save(h1);
+                }
+                boolean h2Existence = hashtagRepository.existsByFolderAndHashtag(folder, requestDto.getHashtags().get(1));
+                if (!h2Existence) {
+                    Hashtag h2 = new Hashtag(folder, requestDto.getHashtags().get(1));
+                    hashtagRepository.save(h2);
+                }
+                boolean h3Existence = hashtagRepository.existsByFolderAndHashtag(folder, requestDto.getHashtags().get(2));
+                if (!h3Existence) {
+                    Hashtag h3 = new Hashtag(folder, requestDto.getHashtags().get(2));
+                    hashtagRepository.save(h3);
+                }
+            }
         }
     }
 
