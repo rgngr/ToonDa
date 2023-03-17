@@ -29,7 +29,7 @@ public class CommentController {
     @ApiOperation("댓글 리스트")
     @GetMapping("/{diaryId}/comments")
     public ResponseDto getComments(@PathVariable Long diaryId) {
-        return DataResponseDto.of(commentService.getComments(diaryId), Code.GET_COMMENT_LIST.getStatusMsg());
+        return DataResponseDto.of(commentService.getComments(diaryId), Code.GET_COMMENTS.getStatusMsg());
     }
 
     @ApiOperation("댓글 삭제")

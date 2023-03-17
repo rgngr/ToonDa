@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import javax.persistence.*;
 
-@Entity(name = "likes")
+@Entity(name = "Likes")
 @Getter
 @RequiredArgsConstructor
 public class Like {

@@ -29,7 +29,7 @@ public class RecommentController {
     @ApiOperation("대댓글 리스트")
     @GetMapping("/{commentId}/recomments")
     public ResponseDto getRecomments(@PathVariable Long commentId) {
-        return DataResponseDto.of(recommentService.getRecomments(commentId), Code.GET_RECOMMENT_LIST.getStatusMsg());
+        return DataResponseDto.of(recommentService.getRecomments(commentId), Code.GET_RECOMMENTS.getStatusMsg());
     }
 
     @ApiOperation("대댓글 삭제")

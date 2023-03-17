@@ -41,4 +41,17 @@ public class User {
         this.password = password;
     }
 
+    public void updateImg(String img) {
+        this.img = img;
+    }
+
+    public void deleteImg() {
+        this.img = null;
+    }
+
+    public void updateContents(String username, String introduction) {
+        this.username = username;
+        this.introduction = introduction;
+    }
+
 }
