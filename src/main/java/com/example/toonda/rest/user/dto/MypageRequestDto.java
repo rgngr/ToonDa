@@ -3,6 +3,7 @@ package com.example.toonda.rest.user.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotBlank;
@@ -15,7 +16,7 @@ public class MypageRequestDto {
 
     @Getter
     @Setter
-    @NoArgsConstructor
+    @RequiredArgsConstructor
     @Schema(description = "프로필 이미지 변경 request")
     public static class UpdateImg {
 
@@ -26,7 +27,7 @@ public class MypageRequestDto {
     }
 
     @Getter
-    @NoArgsConstructor
+    @RequiredArgsConstructor
     @Schema(description = "프로필 username/ introduction request")
     public static class UpdateContents {
 

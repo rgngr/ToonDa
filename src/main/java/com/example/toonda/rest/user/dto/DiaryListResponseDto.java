@@ -3,13 +3,13 @@ package com.example.toonda.rest.user.dto;
 import com.example.toonda.rest.diary.entity.Diary;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Schema(description = "마이페이지 다이어리 좋아요 리스트 response")
 public class DiaryListResponseDto {
 
@@ -20,7 +20,6 @@ public class DiaryListResponseDto {
     }
 
     @Getter
-    @RequiredArgsConstructor
     @Schema(description = "마이페이지 다이어리 낱개 response")
     public static class Diaries {
 
