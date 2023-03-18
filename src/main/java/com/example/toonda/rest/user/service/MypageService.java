@@ -39,13 +39,19 @@ public class MypageService {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
-        // 유저 존재 여부 확인 (deleted = false)
-        User oppUser = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() -> new RestApiException(Code.NO_USER));
-        // 차단 여부 확인
-        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(oppUser, user);
-        if (isBlocked) throw new RestApiException(Code.NO_USER);
-        // oppUser 프로필 생성
-        return new ProfileResponseDto(oppUser);
+        // 본인 or 다른 사람
+        if (user.getId() == userId) {
+            // 프로필 생성
+            return new ProfileResponseDto(user);
+        } else {
+            // 유저 존재 여부 확인 (deleted = false)
+            User oppUser = userRepository.findByIdAndDeletedFalse(userId).orElseThrow(() -> new RestApiException(Code.NO_USER));
+            // 차단 여부 확인
+            boolean isBlocked = blockRepository.existsByUserAndBlockedUser(oppUser, user);
+            if (isBlocked) throw new RestApiException(Code.NO_USER);
+            // oppUser 프로필 생성
+            return new ProfileResponseDto(oppUser);
+        }
     }
 
     // get 폴더 리스트
