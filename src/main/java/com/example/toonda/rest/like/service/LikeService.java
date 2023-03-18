@@ -31,9 +31,10 @@ public class LikeService {
     private final CommentRepository commentRepository;
     private final RecommentRepository recommentRepository;
 
+    // 폴더 구독/취소
     @Transactional
     public ResponseDto likeFolder(Long folderId) {
-        // 유저 확인
+        // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 폴더 존재 여부 확인 (deleted = false, open = true)
@@ -54,9 +55,10 @@ public class LikeService {
         return ResponseDto.of(isLike, Code.LIKE_FOLDER);
     }
 
+    // 다이어리 좋아요/취소
     @Transactional
     public ResponseDto likeDiary(Long diaryId) {
-        // 유저 확인
+        // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 다이어리 존재 여부 확인 (deleted = false)
@@ -79,9 +81,10 @@ public class LikeService {
         return ResponseDto.of(isLike, Code.LIKE_DIARY);
     }
 
+    // 댓글 좋아요/취소
     @Transactional
     public ResponseDto likeComment(Long commentId) {
-        // 유저 확인
+        // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 댓글 존재 여부 확인 (deleted = false, recommented = false)
@@ -108,9 +111,10 @@ public class LikeService {
         return ResponseDto.of(isLike, Code.LIKE_COMMENT);
     }
 
+    // 대댓글 좋아요/취소
     @Transactional
     public ResponseDto likeRecomment(Long recommentId) {
-        // 유저 확인
+        // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 대댓글 존재 여부 확인 (deleted = false, rrecommented = false)

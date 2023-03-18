@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Tag(name = "like", description = "구독/좋아요 관련 API")
+@Tag(name = "like", description = "폴더 구독/취소, 다이어리 좋아요/취소, 댓글 좋아요/취소, 대댓글 좋아요/취소")
 public class LikeController {
 
     private final LikeService likeService;
