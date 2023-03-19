@@ -5,7 +5,6 @@ import com.example.toonda.rest.comment.entity.Recomment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -14,7 +13,7 @@ public interface RecommentRepository extends JpaRepository<Recomment, Long> {
 
     Long countByCommentAndDeletedFalse(Comment comment);
 
-    @Query(value = "select r from Recomment r where r.comment= :comment and r.deleted=false order by r.createdAt")
+    @Query(value = "select r from Recomment r where r.comment= :comment and r.deleted=false")
     List<Recomment> getRecommentList(@Param("comment")Comment comment);
 
     Optional<Recomment> findByIdAndDeletedFalse(Long id);
