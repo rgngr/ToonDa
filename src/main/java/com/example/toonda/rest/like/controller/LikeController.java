@@ -30,6 +30,8 @@ public class LikeController {
         return likeService.likeDiary(diaryId);
     }
 
+    // 다이어리 좋아요 리스트
+
     @ApiOperation("댓글 좋아요/취소")
     @PostMapping("/comments/{commentId}/like")
     public ResponseDto likeComment(@PathVariable Long commentId) {
