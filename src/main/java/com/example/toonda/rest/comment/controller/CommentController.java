@@ -33,9 +33,9 @@ public class CommentController {
     }
 
     @ApiOperation("댓글 삭제")
-    @PatchMapping("/comments/{id}")
-    public ResponseDto deleteComment(@PathVariable Long id) {
-        commentService.deleteComment(id);
+    @PatchMapping("/comments/{commentId}")
+    public ResponseDto deleteComment(@PathVariable Long commentId) {
+        commentService.deleteComment(commentId);
         return ResponseDto.of(true, Code.DELETE_COMMENT);
     }
 
