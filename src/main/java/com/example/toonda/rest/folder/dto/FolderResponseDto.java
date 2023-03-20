@@ -45,6 +45,14 @@ public class FolderResponseDto {
         this.modifiedAt = folder.getModifiedAt();
     }
 
+    public FolderResponseDto(Folder folder) {
+        this.folderId = folder.getId();
+        this.userId = folder.getUser().getId();
+        this.title = folder.getTitle();
+        this.folderImg = folder.getImg();
+        this.open = folder.isOpen();
+    }
+
     @Getter
     public static class Title {
 
@@ -55,6 +63,17 @@ public class FolderResponseDto {
             this.folderId = folder.getId();
             this.title = folder.getTitle();
         }
+    }
+
+    @Getter
+    public static class FolderId {
+
+        private Long folderId;
+
+        public FolderId(Folder folder) {
+            this.folderId = folder.getId();
+        }
+
     }
 
 }

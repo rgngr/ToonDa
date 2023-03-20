@@ -21,5 +21,5 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
     @Query(value = "select c from Comment c where c.id= :id and c.deleted = false and c.recommented = false")
     Optional<Comment> getAliveComment(@Param("id") Long id);
 
-    boolean existsByIdAndDeletedFalse(Long id);
+    Long countByDiaryAndDeletedFalse(Diary diary);
 }

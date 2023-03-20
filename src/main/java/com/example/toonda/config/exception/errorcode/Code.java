@@ -24,6 +24,7 @@ public enum Code {
     CREATE_DIARY( "다이어리 생성 성공", HttpStatus.OK),
     CREATE_RECOMMENT( "대댓글 작성 성공", HttpStatus.OK),
     UPDATE_FOLDER( "폴더 수정 성공", HttpStatus.OK),
+    GET_FOLDER("폴더 상세 페이지 불러오기 성공", HttpStatus.OK ),
     GET_FOLDERS("폴더 리스트 불러오기 성공", HttpStatus.OK ),
     GET_DIARIES("다이어리 리스트 불러오기 성공", HttpStatus.OK ),
     GET_LIKE_DIARIES("다이어리 좋아요 리스트 불러오기 성공", HttpStatus.OK ),

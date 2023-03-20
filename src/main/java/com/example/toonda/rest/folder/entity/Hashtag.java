@@ -25,8 +25,4 @@ public class Hashtag {
         this.hashtag = hashtag;
     }
 
-    public void updateHashtag (String hashtag) {
-        this.hashtag = hashtag;
-    }
-
 }

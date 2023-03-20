@@ -19,6 +19,21 @@ public class DiaryResponseDto {
     private String content;
     private LocalDate date;
     private LocalDateTime createdAt;
+    private Long commentNum;
+    private Long likeNum;
+    private boolean isLike;
+
+    public DiaryResponseDto(User user, Diary diary, Long commentNum, Long likeNum, boolean isLike) {
+        this.diaryId = diary.getId();
+        this.userId = user.getId();
+        this.img = diary.getImg();
+        this.content = diary.getContent();
+        this.date = diary.getDate();
+        this.createdAt = diary.getCreatedAt();
+        this.commentNum = commentNum;
+        this.likeNum = likeNum;
+        this.isLike = isLike;
+    }
 
     public DiaryResponseDto(User user, Diary diary) {
         this.diaryId = diary.getId();

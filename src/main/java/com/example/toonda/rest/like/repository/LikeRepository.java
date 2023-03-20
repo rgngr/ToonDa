@@ -30,4 +30,8 @@ public interface LikeRepository extends JpaRepository<Like, Long> {
     Optional<Like> findByUserAndRecomment(User user, Recomment recomment);
 
     Long countByFolder(Folder folder);
+
+    Long countByDiary(Diary diary);
+
+    boolean existsByUserAndDiary(User user, Diary diary);
 }
