@@ -16,7 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-@Tag(name = "users", description = "회원가입/로그인, 프로필 관련 API")
+@Tag(name = "users", description = "이메일/유저네임 중복 확인, 회원가입, 로그인")
 public class UserController {
 
     private final UserService userService;
@@ -43,10 +43,7 @@ public class UserController {
     @ApiOperation("로그인")
     @PostMapping("/login")
     public ResponseDto login(@RequestBody @Valid LoginRequestDto requestDto, HttpServletResponse response) {
-        return DataResponseDto.of( userService.login(requestDto, response), Code.LOGIN_SUCCESS.getStatusMsg());
+        return DataResponseDto.of(userService.login(requestDto, response), Code.LOGIN_SUCCESS.getStatusMsg());
     }
-
-//    @ApiOperation(value = "마이페이지 (폴더 리스트)")
-//    @GetMapping("{username}/folders")
 
 }

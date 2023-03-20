@@ -42,6 +42,7 @@ public class UserService {
     // 회원가입
     @Transactional
     public void signup(SignupRequestDto requestDto) {
+        // 패스워드 인코더
         String password = passwordEncoder.encode(requestDto.getPassword());
         userRepository.save(new User(requestDto, password));
     }
@@ -51,15 +52,13 @@ public class UserService {
     public LoginResponseDto login(LoginRequestDto requestDto, HttpServletResponse response) {
         String email = requestDto.getEmail();
         String password = requestDto.getPassword();
-
-        User user = userRepository.findByKakaoIdIsNullAndEmail(email).orElseThrow(
-                () -> new RestApiException(Code.NO_USER)
-        );
-
+        // 이메일 존재 여부 확인
+        User user = userRepository.findByKakaoIdNullAndEmail(email).orElseThrow(() -> new RestApiException(Code.NO_USER));
+        // 비밀번호 일치 여부 확인
         if (!passwordEncoder.matches(password,user.getPassword())){
             throw new RestApiException(Code.WRONG_PASSWORD);
         }
-
+        // 토큰 생성
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername()));
 
         return new LoginResponseDto(user);

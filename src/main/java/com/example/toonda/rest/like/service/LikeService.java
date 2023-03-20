@@ -31,9 +31,10 @@ public class LikeService {
     private final CommentRepository commentRepository;
     private final RecommentRepository recommentRepository;
 
+    // 폴더 구독/취소
     @Transactional
     public ResponseDto likeFolder(Long folderId) {
-        // 유저 확인
+        // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 폴더 존재 여부 확인 (deleted = false, open = true)
@@ -54,18 +55,19 @@ public class LikeService {
         return ResponseDto.of(isLike, Code.LIKE_FOLDER);
     }
 
+    // 다이어리 좋아요/취소
     @Transactional
     public ResponseDto likeDiary(Long diaryId) {
-        // 유저 확인
+        // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 다이어리 존재 여부 확인 (deleted = false)
         Diary diary = diaryRepository.findByIdAndDeletedFalse(diaryId).orElseThrow(() -> new RestApiException(Code.NO_DIARY));
+        // 차단 여부 확인
+        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(diary.getUser(), user);
+        if (isBlocked) throw new RestApiException(Code.NO_FOLDER);
         // 폴더 존재 여부 확인 (deleted = false, open = true)
         Folder folder = folderRepository.getAliveFolder(diary.getFolder().getId()).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
-        // 차단 여부 확인
-        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(folder.getUser(), user);
-        if (isBlocked) throw new RestApiException(Code.NO_FOLDER);
         // 다이어리 좋아요 여부 확인
         Like likeDiary = likeRepository.findByUserAndDiary(user, diary).orElse(null);
         boolean isLike;
@@ -79,22 +81,28 @@ public class LikeService {
         return ResponseDto.of(isLike, Code.LIKE_DIARY);
     }
 
+    // 댓글 좋아요/취소
     @Transactional
     public ResponseDto likeComment(Long commentId) {
-        // 유저 확인
+        // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 댓글 존재 여부 확인 (deleted = false, recommented = false)
         Comment comment = commentRepository.getAliveComment(commentId).orElseThrow(() -> new RestApiException(Code.NO_COMMENT));
+        // 차단 여부 확인 (댓글)
+        if (comment.getUser().getId() != user.getId()) {
+            boolean isBlocked1 = blockRepository.existsByUserAndBlockedUser(comment.getUser(), user);
+            if (isBlocked1) throw new RestApiException(Code.NO_COMMENT);
+        }
         // 다이어리 존재 여부 확인 (deleted = false)
         Diary diary = diaryRepository.findByIdAndDeletedFalse(comment.getDiary().getId()).orElseThrow(() -> new RestApiException(Code.NO_DIARY));
+        // 차단 여부 확인 (다이어리)
+        if (diary.getUser().getId() != user.getId()) {
+            boolean isBlocked2 = blockRepository.existsByUserAndBlockedUser(diary.getUser(), user);
+            if (isBlocked2) throw new RestApiException(Code.NO_FOLDER);
+        }
         // 폴더 존재 여부 확인 (deleted = false, open = true)
         Folder folder = folderRepository.getAliveFolder(diary.getFolder().getId()).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
-        // 차단 여부 확인 (댓글, 폴더)
-        boolean isBlocked1 = blockRepository.existsByUserAndBlockedUser(comment.getUser(), user);
-        if (isBlocked1) throw new RestApiException(Code.NO_COMMENT);
-        boolean isBlocked2 = blockRepository.existsByUserAndBlockedUser(folder.getUser(), user);
-        if (isBlocked2) throw new RestApiException(Code.NO_FOLDER);
         // 댓글 좋아요 여부 확인
         Like likeComment = likeRepository.findByUserAndComment(user, comment).orElse(null);
         boolean isLike;
@@ -108,24 +116,30 @@ public class LikeService {
         return ResponseDto.of(isLike, Code.LIKE_COMMENT);
     }
 
+    // 대댓글 좋아요/취소
     @Transactional
     public ResponseDto likeRecomment(Long recommentId) {
-        // 유저 확인
+        // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 대댓글 존재 여부 확인 (deleted = false, rrecommented = false)
         Recomment recomment = recommentRepository.getAliveRecomment(recommentId).orElseThrow(() -> new RestApiException(Code.NO_RECOMMENT));
         // 댓글 존재 여부 확인 (deleted = false, recommented = false)
         Comment comment = commentRepository.getAliveComment(recomment.getComment().getId()).orElseThrow(() -> new RestApiException(Code.NO_COMMENT));
+        // 차단 여부 확인 (댓글)
+        if (comment.getUser().getId() != user.getId()) {
+            boolean isBlocked1 = blockRepository.existsByUserAndBlockedUser(comment.getUser(), user);
+            if (isBlocked1) throw new RestApiException(Code.NO_COMMENT);
+        }
         // 다이어리 존재 여부 확인 (deleted = false)
         Diary diary = diaryRepository.findByIdAndDeletedFalse(comment.getDiary().getId()).orElseThrow(() -> new RestApiException(Code.NO_DIARY));
+        // 차단 여부 확인 (다이어리)
+        if (diary.getUser().getId() != user.getId()) {
+            boolean isBlocked2 = blockRepository.existsByUserAndBlockedUser(diary.getUser(), user);
+            if (isBlocked2) throw new RestApiException(Code.NO_FOLDER);
+        }
         // 폴더 존재 여부 확인 (deleted = false, open = true)
         Folder folder = folderRepository.getAliveFolder(diary.getFolder().getId()).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
-        // 차단 여부 확인 (댓글, 폴더)
-        boolean isBlocked1 = blockRepository.existsByUserAndBlockedUser(comment.getUser(), user);
-        if (isBlocked1) throw new RestApiException(Code.NO_COMMENT);
-        boolean isBlocked2 = blockRepository.existsByUserAndBlockedUser(folder.getUser(), user);
-        if (isBlocked2) throw new RestApiException(Code.NO_FOLDER);
         // 대댓글 좋아요 여부 확인
         Like likeRecomment = likeRepository.findByUserAndRecomment(user, recomment).orElse(null);
         boolean isLike;

@@ -2,11 +2,11 @@ package com.example.toonda.rest.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import javax.validation.constraints.*;
 
 @Getter
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Schema(description = "로그인 request")
 public class LoginRequestDto {
 

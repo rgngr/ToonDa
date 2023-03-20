@@ -2,7 +2,7 @@ package com.example.toonda.rest.folder.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
 import javax.validation.constraints.NotNull;
@@ -10,7 +10,7 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Schema(description = "폴더 생성 request")
 public class FolderRequestDto {
 
@@ -30,7 +30,7 @@ public class FolderRequestDto {
 
     @Getter
     @Setter
-    @NoArgsConstructor
+    @RequiredArgsConstructor
     @Schema(description = "폴더 수정 request")
     public static class Update {
 

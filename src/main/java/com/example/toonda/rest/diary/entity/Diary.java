@@ -6,7 +6,6 @@ import com.example.toonda.rest.folder.entity.Folder;
 import com.example.toonda.rest.user.entity.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -28,13 +27,10 @@ public class Diary extends TimeStamped {
     private Folder folder;
 
     @Column(nullable = false)
-    private String title;
+    private String img;
 
     @Column
     private String content;
-
-    @Column(nullable = false)
-    private String img;
 
     @Column(nullable = false)
     private LocalDate date;
@@ -45,14 +41,12 @@ public class Diary extends TimeStamped {
     public Diary (User user, Folder folder, DiaryRequestDto requestDto, String img) {
         this.user = user;
         this.folder = folder;
-        this.title = requestDto.getTitle();
-        this.content = requestDto.getContent();
         this.img = img;
+        this.content = requestDto.getContent();
         this.date = requestDto.getDate();
     }
 
     public void updateDiary(DiaryRequestDto.Update requestDto) {
-        this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.date = requestDto.getDate();
     }

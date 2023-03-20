@@ -15,7 +15,7 @@ public class RecommentResponseDto {
     private String username;
     private String recomment;
     private boolean isLike;
-    private boolean isDeleted;
+    private boolean isRrecommented;
     private Long likeNum;
     private LocalDateTime createdAt;
 
@@ -26,7 +26,7 @@ public class RecommentResponseDto {
         this.username = recomment.getUser().getUsername();
         this.recomment = recomment.getRecomment();
         this.isLike = isLike;
-        this.isDeleted = recomment.isDeleted();
+        this.isRrecommented = recomment.isRrecommented();
         this.likeNum = likeNum;
         this.createdAt = recomment.getCreatedAt();
     }

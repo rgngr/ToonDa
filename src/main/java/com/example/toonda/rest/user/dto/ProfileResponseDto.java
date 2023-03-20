@@ -5,8 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 @Getter
-@Schema(description = "로그인 response")
-public class LoginResponseDto {
+@Schema(description = "프로필 response")
+public class ProfileResponseDto {
 
     @Schema (description = "userId")
     private Long userId;
@@ -14,12 +14,14 @@ public class LoginResponseDto {
     private String userImg;
     @Schema (description = "유저네임")
     private String username;
+    @Schema (description = "자기소개")
+    private String Introduction;
 
-
-    public LoginResponseDto(User user) {
+    public ProfileResponseDto(User user) {
         this.userId = user.getId();
         this.userImg = user.getImg();
         this.username = user.getUsername();
+        this.Introduction = user.getIntroduction();
     }
 
 }

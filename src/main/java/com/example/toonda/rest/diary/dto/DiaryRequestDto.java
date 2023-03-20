@@ -2,7 +2,7 @@ package com.example.toonda.rest.diary.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,13 +11,9 @@ import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
+@RequiredArgsConstructor
 @Schema(description = "다이어리 생성 request")
 public class DiaryRequestDto {
-
-    @Schema(description = "제목")
-    @NotNull
-    private String title;
 
     @Schema(description = "이미지")
     @NotNull
@@ -32,13 +28,9 @@ public class DiaryRequestDto {
     private LocalDate date;
 
     @Getter
-    @NoArgsConstructor
+    @RequiredArgsConstructor
     @Schema(description = "다이어리 수정 request")
     public static class Update {
-
-        @Schema(description = "제목")
-        @NotNull
-        private String title;
 
         @Schema(description = "내용")
         private String content;

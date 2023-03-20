@@ -4,6 +4,7 @@ import com.example.toonda.rest.diary.entity.Diary;
 import com.example.toonda.rest.folder.dto.FolderResponseDto;
 import com.example.toonda.rest.user.entity.User;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,38 +14,45 @@ import java.util.List;
 public class DiaryResponseDto {
 
     private Long diaryId;
-    private Long writerId;
-    private String title;
-    private String content;
+    private Long userId;
     private String img;
+    private String content;
     private LocalDate date;
     private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
-    private boolean deleted;
+    private Long commentNum;
+    private Long likeNum;
+    private boolean isLike;
+
+    public DiaryResponseDto(User user, Diary diary, Long commentNum, Long likeNum, boolean isLike) {
+        this.diaryId = diary.getId();
+        this.userId = user.getId();
+        this.img = diary.getImg();
+        this.content = diary.getContent();
+        this.date = diary.getDate();
+        this.createdAt = diary.getCreatedAt();
+        this.commentNum = commentNum;
+        this.likeNum = likeNum;
+        this.isLike = isLike;
+    }
 
     public DiaryResponseDto(User user, Diary diary) {
         this.diaryId = diary.getId();
-        this.writerId = user.getId();
-        this.title = diary.getTitle();
-        this.content = diary.getContent();
+        this.userId = user.getId();
         this.img = diary.getImg();
+        this.content = diary.getContent();
         this.date = diary.getDate();
         this.createdAt = diary.getCreatedAt();
-        this.modifiedAt = diary.getModifiedAt();
-        this.deleted = diary.isDeleted();
     }
 
     @Getter
-    public static class Folders {
+    @NoArgsConstructor
+    public static class FolderList {
 
-        private List<FolderResponseDto.Title> folders = new ArrayList<>();
+        private List<FolderResponseDto.Title> folderList = new ArrayList<>();
 
-        public Folders() {
-        }
         public void addFolder(FolderResponseDto.Title responseDto) {
-            folders.add(responseDto);
+            folderList.add(responseDto);
         }
     }
-
 
 }

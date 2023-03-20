@@ -15,7 +15,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/folders")
-@Tag(name = "folders", description = "폴더 관련 API")
+@Tag(name = "folders", description = "폴더 생성/ 상세 페이지/ get 수정 페이지/ 수정/ 삭제")
 public class FolderController {
 
     private final FolderService folderService;
@@ -26,29 +26,29 @@ public class FolderController {
         return DataResponseDto.of(folderService.createFolder(requestDto), Code.CREATE_FOLDER.getStatusMsg());
     }
 
-    @ApiOperation("폴더 불러오기")
-    @GetMapping("/{id}")
-    public ResponseDto getFolder(@PathVariable Long id) {
-        return DataResponseDto.of(folderService.getFolder(id), Code.CREATE_FOLDER.getStatusMsg());
+    @ApiOperation("폴더 상세 페이지")
+    @GetMapping("/{folderId}")
+    public ResponseDto getFolder(@PathVariable Long folderId) {
+        return DataResponseDto.of(folderService.getFolder(folderId), Code.GET_FOLDER.getStatusMsg());
     }
 
     @ApiOperation("GET 폴더 수정 페이지")
-    @GetMapping("/{id}/update-page")
-    public ResponseDto getFolderUpdatePage(@PathVariable Long id) {
-        return DataResponseDto.of(folderService.getFolderUpdatePage(id), Code.GET_FOLDER_UPDATE_PAGE.getStatusMsg());
+    @GetMapping("/{folderId}/update-page")
+    public ResponseDto getFolderUpdatePage(@PathVariable Long folderId) {
+        return DataResponseDto.of(folderService.getFolderUpdatePage(folderId), Code.GET_FOLDER_UPDATE_PAGE.getStatusMsg());
     }
 
     @ApiOperation("폴더 수정")
-    @PatchMapping("/{id}")
-    public ResponseDto updateFolder(@PathVariable Long id, @ModelAttribute @Valid FolderRequestDto.Update requestDto) throws IOException {
-        folderService.updateFolder(id, requestDto);
+    @PatchMapping("/{folderId}")
+    public ResponseDto updateFolder(@PathVariable Long folderId, @ModelAttribute @Valid FolderRequestDto.Update requestDto) throws IOException {
+        folderService.updateFolder(folderId, requestDto);
         return ResponseDto.of(true, Code.UPDATE_FOLDER);
     }
 
     @ApiOperation("폴더 삭제")
-    @DeleteMapping("/{id}")
-    public ResponseDto deleteFolder(@PathVariable Long id) {
-        folderService.deleteFolder(id);
+    @DeleteMapping("/{folderId}")
+    public ResponseDto deleteFolder(@PathVariable Long folderId) {
+        folderService.deleteFolder(folderId);
         return ResponseDto.of(true, Code.DELETE_FOLDER);
     }
 

@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comments")
-@Tag(name = "recomments", description = "대댓글 관련 API")
+@Tag(name = "recomments", description = "대댓글 작성/ 리스트/ 삭제")
 public class RecommentController {
 
     private final RecommentService recommentService;
@@ -29,13 +29,13 @@ public class RecommentController {
     @ApiOperation("대댓글 리스트")
     @GetMapping("/{commentId}/recomments")
     public ResponseDto getRecomments(@PathVariable Long commentId) {
-        return DataResponseDto.of(recommentService.getRecomments(commentId), Code.GET_RECOMMENT_LIST.getStatusMsg());
+        return DataResponseDto.of(recommentService.getRecomments(commentId), Code.GET_RECOMMENTS.getStatusMsg());
     }
 
     @ApiOperation("대댓글 삭제")
-    @DeleteMapping("/recomments/{id}")
-    public ResponseDto deleteComment(@PathVariable Long id) {
-        recommentService.deleteRecomment(id);
+    @PatchMapping("/recomments/{recommentId}")
+    public ResponseDto deleteComment(@PathVariable Long recommentId) {
+        recommentService.deleteRecomment(recommentId);
         return ResponseDto.of(true, Code.DELETE_RECOMMENT);
     }
 
