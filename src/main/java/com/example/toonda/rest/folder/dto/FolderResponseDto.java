@@ -12,9 +12,9 @@ import java.util.List;
 @Schema(description = "폴더 상세페이지 response")
 public class FolderResponseDto {
 
-    @Schema(description = "folder Id")
+    @Schema(description = "폴더 Id")
     private Long folderId;
-    @Schema(description = "writer Id")
+    @Schema(description = "유저 Id")
     private Long userId;
     private String userImg;
     private String username;
@@ -24,29 +24,25 @@ public class FolderResponseDto {
     public void addHashtag(HashtagResponseDto responseDto) {
         hashtagList.add(responseDto);
     }
-//    private Long likeNum;
+    private Long likeNum;
     private boolean open;
-    private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-    private boolean deleted;
     private List<DiaryResponseDto> diaryList = new ArrayList<>();
 
     public void addDiary(DiaryResponseDto responseDto) {
         diaryList.add(responseDto);
     }
 
-    public FolderResponseDto(Folder folder) {
+    public FolderResponseDto(Folder folder, Long likeNum) {
         this.folderId = folder.getId();
         this.userId = folder.getUser().getId();
         this.userImg = folder.getUser().getImg();
         this.username = folder.getUser().getUsername();
         this.title = folder.getTitle();
         this.folderImg = folder.getImg();
-//        this.likeNum = likeNum;
+        this.likeNum = likeNum;
         this.open = folder.isOpen();
-        this.createdAt = folder.getCreatedAt();
         this.modifiedAt = folder.getModifiedAt();
-        this.deleted = folder.isDeleted();
     }
 
     @Getter

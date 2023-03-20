@@ -52,4 +52,7 @@ public class FolderController {
         return ResponseDto.of(true, Code.DELETE_FOLDER);
     }
 
+    // 폴더 리스트
+    // 검색
+
 }
