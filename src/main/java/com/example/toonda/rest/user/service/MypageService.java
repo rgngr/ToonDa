@@ -64,7 +64,7 @@ public class MypageService {
         if (user.getId() == userId) {
             // 폴더 리스트 생성 (deleted = false, order by modifiedAt desc)
             FolderListResponseDto folderListResponseDto = new FolderListResponseDto();
-            List<Folder> folders = folderRepository.findAllForMypageFolderList1(user);
+            List<Folder> folders = folderRepository.findAllUsersFolders(user);
             for (Folder folder : folders) {
                 Long likeNum = likeRepository.countByFolder(folder);
                 FolderListResponseDto.Folders foldersFolder = new FolderListResponseDto.Folders(folder, likeNum);
@@ -79,7 +79,7 @@ public class MypageService {
             if (isBlocked) throw new RestApiException(Code.NO_USER);
             // 폴더 리스트 생성 (deleted = false, open = true)
             FolderListResponseDto folderListResponseDto = new FolderListResponseDto();
-            List<Folder> folders = folderRepository.findAllForMypageFolderList2(oppUser);
+            List<Folder> folders = folderRepository.findAllForMypageFolderList(oppUser);
             for (Folder folder : folders) {
                 Long likeNum = likeRepository.countByFolder(folder);
                 FolderListResponseDto.Folders foldersFolder = new FolderListResponseDto.Folders(folder, likeNum);

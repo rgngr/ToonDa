@@ -16,8 +16,9 @@ public interface FolderRepository extends JpaRepository<Folder, Long> {
     Optional<Folder> getAliveFolder(@Param("id") Long id);
 
     @Query("select f from Folder f where f.user = :user and f.deleted= false order by f.modifiedAt desc ")
-    List<Folder> findAllForMypageFolderList1(@Param("user")User user);
+    List<Folder> findAllUsersFolders(@Param("user")User user);
 
     @Query("select f from Folder f where f.user = :oppUser and f.deleted= false and f.open=true order by f.modifiedAt desc")
-    List<Folder> findAllForMypageFolderList2(@Param("oppUser")User oppUser);
+    List<Folder> findAllForMypageFolderList(@Param("oppUser")User oppUser);
+
 }
