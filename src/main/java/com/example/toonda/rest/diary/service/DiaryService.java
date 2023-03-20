@@ -39,6 +39,8 @@ public class DiaryService {
         // 다이어리 생성
         String diaryImg = s3Uploader.upload(requestDto.getImg(), "file");
         Diary diary = diaryRepository.save(new Diary(user, folder, requestDto, diaryImg));
+        // diaryNum++
+        folder.plusDiaryNum();
 
         return new DiaryResponseDto(user, diary);
     }
