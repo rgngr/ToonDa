@@ -2,19 +2,15 @@ package com.example.toonda.rest.folder.dto;
 
 import com.example.toonda.rest.diary.dto.DiaryResponseDto;
 import com.example.toonda.rest.folder.entity.Folder;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Schema(description = "폴더 상세페이지 response")
 public class FolderResponseDto {
 
-    @Schema(description = "폴더 Id")
     private Long folderId;
-    @Schema(description = "유저 Id")
     private Long userId;
     private String userImg;
     private String username;

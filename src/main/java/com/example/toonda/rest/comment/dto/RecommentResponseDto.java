@@ -1,12 +1,10 @@
 package com.example.toonda.rest.comment.dto;
 
 import com.example.toonda.rest.comment.entity.Recomment;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import java.time.LocalDateTime;
 
 @Getter
-@Schema(description = "대댓글 response")
 public class RecommentResponseDto {
 
     private Long recommentId;

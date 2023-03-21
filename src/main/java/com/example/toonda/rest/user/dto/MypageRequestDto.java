@@ -1,6 +1,8 @@
 package com.example.toonda.rest.user.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -11,31 +13,30 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @NoArgsConstructor
-@Schema(description = "마이페이지 request")
 public class MypageRequestDto {
 
     @Getter
     @Setter
     @RequiredArgsConstructor
-    @Schema(description = "프로필 이미지 변경 request")
+    @ApiModel(value = "프로필 이미지 변경 request")
     public static class UpdateImg {
 
-        @Schema (description = "이미지")
         @NotNull
+        @ApiModelProperty(value="프로필 이미지", required=true)
         private MultipartFile img;
 
     }
 
     @Getter
     @RequiredArgsConstructor
-    @Schema(description = "프로필 username/ introduction request")
+    @ApiModel(value = "프로필 유저네임/ 자기소개 변경 request")
     public static class UpdateContents {
 
-        @Schema (description = "유저네임")
         @NotBlank
+        @ApiModelProperty(value="유저네임", required=true)
         private String username;
 
-        @Schema (description = "자기소개")
+        @ApiModelProperty(value="자기 소개")
         private String introduction;
 
     }
