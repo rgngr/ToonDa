@@ -5,7 +5,8 @@ import com.example.toonda.config.dto.ResponseDto;
 import com.example.toonda.config.exception.errorcode.Code;
 import com.example.toonda.rest.comment.dto.CommentRequestDto;
 import com.example.toonda.rest.comment.sevice.CommentService;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,25 +15,25 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/diaries")
-@Tag(name = "comments", description = "댓글 작성/ 리스트/ 삭제")
+@Api(tags = {"댓글"})
 public class CommentController {
 
     private final CommentService commentService;
 
-    @ApiOperation("댓글 작성")
+    @Operation(summary = "댓글 작성")
     @PostMapping("/{diaryId}/comments")
     public ResponseDto createComment(@PathVariable Long diaryId,
                                      @RequestBody @Valid CommentRequestDto requestDto) {
         return DataResponseDto.of(commentService.createComment(diaryId, requestDto), Code.CREATE_COMMENT.getStatusMsg());
     }
 
-    @ApiOperation("댓글 리스트")
+    @Operation(summary = "댓글 리스트")
     @GetMapping("/{diaryId}/comments")
     public ResponseDto getComments(@PathVariable Long diaryId) {
         return DataResponseDto.of(commentService.getComments(diaryId), Code.GET_COMMENTS.getStatusMsg());
     }
 
-    @ApiOperation("댓글 삭제")
+    @Operation(summary = "댓글 삭제")
     @PatchMapping("/comments/{commentId}")
     public ResponseDto deleteComment(@PathVariable Long commentId) {
         commentService.deleteComment(commentId);

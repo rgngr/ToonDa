@@ -1,6 +1,8 @@
 package com.example.toonda.rest.folder.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -11,40 +13,42 @@ import java.util.List;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Schema(description = "폴더 생성 request")
+@ApiModel(value = "폴더 생성 request")
 public class FolderRequestDto {
 
-    @Schema(description = "제목")
     @NotNull(message = "제목을 입력해주세요.")
+    @ApiModelProperty(value="폴더 제목", required=true)
     private String title;
 
-    @Schema(description = "이미지")
     @NotNull(message = "이미지를 선택해주세요.")
+    @ApiModelProperty(value="폴더 이미지", required=true)
     private MultipartFile img;
 
-    @Schema(description = "해시태그")
+    @ApiModelProperty(value="해시태그 리스트")
     private List<String> hashtags;
 
-    @Schema(description = "공개 여부")
+    @NotNull
+    @ApiModelProperty(value="공개 여부", required=true)
     private boolean open;
 
     @Getter
     @Setter
     @RequiredArgsConstructor
-    @Schema(description = "폴더 수정 request")
+    @ApiModel(value = "폴더 수정 request")
     public static class Update {
 
-        @Schema(description = "제목")
         @NotNull(message = "제목을 입력해주세요.")
+        @ApiModelProperty(value="폴더 제", required=true)
         private String title;
 
-        @Schema(description = "이미지")
+        @ApiModelProperty(value="폴더 이미지")
         private MultipartFile img;
 
-        @Schema(description = "해시태그")
+        @ApiModelProperty(value="해시태그 리스트")
         private List<String> hashtags;
 
-        @Schema(description = "공개 여부")
+        @NotNull
+        @ApiModelProperty(value="공개 여부", required=true)
         private boolean open;
 
     }

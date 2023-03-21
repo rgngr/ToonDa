@@ -1,21 +1,24 @@
 package com.example.toonda.rest.user.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import javax.validation.constraints.*;
 
 @Getter
 @RequiredArgsConstructor
-@Schema(description = "로그인 request")
+@ApiModel(value = "로그인 request")
 public class LoginRequestDto {
 
-    @Schema(description = "이메일")
     @Email
     @NotBlank
+    @ApiModelProperty(value="이메일", required=true)
     private String email;
 
-    @Schema (description = "패스워드")
+    @NotNull
+    @ApiModelProperty(value="패스워드", required=true)
     private String password;
 
 }

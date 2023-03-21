@@ -1,7 +1,6 @@
 package com.example.toonda.rest.user.dto;
 
 import com.example.toonda.rest.folder.entity.Folder;
-import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
@@ -9,7 +8,6 @@ import java.util.List;
 
 @Getter
 @NoArgsConstructor
-@Schema(description = "마이페이지 폴더 리스트 response")
 public class FolderListResponseDto {
 
     private List<Folders> folderList = new ArrayList<>();
@@ -19,7 +17,6 @@ public class FolderListResponseDto {
     }
 
     @Getter
-    @Schema(description = "마이페이지 폴더 낱개 response")
     public static class Folders {
 
         private String folderImg;

@@ -1,6 +1,8 @@
 package com.example.toonda.rest.diary.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,31 +14,31 @@ import java.time.LocalDate;
 @Getter
 @Setter
 @RequiredArgsConstructor
-@Schema(description = "다이어리 생성 request")
+@ApiModel(value = "다이어리 생성 request")
 public class DiaryRequestDto {
 
-    @Schema(description = "이미지")
     @NotNull
+    @ApiModelProperty(value="다이어리 이미지", required=true)
     private MultipartFile img;
 
-    @Schema(description = "내용")
+    @ApiModelProperty(value="다이어리 내용")
     private String content;
 
-    @Schema(description = "날짜")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @NotNull
+    @DateTimeFormat(pattern = "YYYY-MM-DD")
+    @ApiModelProperty(value="다이어리 날짜",example = "YYYY-MM-DD",required=true)
     private LocalDate date;
 
     @Getter
     @RequiredArgsConstructor
-    @Schema(description = "다이어리 수정 request")
+    @ApiModel(value = "다이어리 수정 request")
     public static class Update {
 
-        @Schema(description = "내용")
+        @ApiModelProperty(value="다이어리 내용")
         private String content;
 
-        @Schema(description = "날짜")
         @NotNull
+        @ApiModelProperty(value="다이어리 날짜",example = "YYYY-MM-DD",required=true)
         private LocalDate date;
 
     }

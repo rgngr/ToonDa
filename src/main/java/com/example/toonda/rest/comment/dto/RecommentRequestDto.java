@@ -1,17 +1,19 @@
 package com.example.toonda.rest.comment.dto;
 
-import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import javax.validation.constraints.NotNull;
 
 @Getter
 @RequiredArgsConstructor
-@Schema(description = "대댓글 작성 request")
+@ApiModel(value = "대댓글 request")
 public class RecommentRequestDto {
 
-    @Schema(description = "대댓글 내용")
     @NotNull
+    @ApiModelProperty(value="대댓글 내용", required=true)
     private String recomment;
 
 }

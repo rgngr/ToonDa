@@ -12,7 +12,9 @@ import springfox.documentation.spring.web.plugins.Docket;
 
 @Configuration
 public class SwaggerConfig {
-    private String version = "V0.1";
+    private String version = "1.0.0";
+    private String title = "ToonDa (툰다) REST API";
+    private String desc = "일상툰 다이어리, 툰다";
 
     @Bean
     public Docket api() {
@@ -21,15 +23,17 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
+                .groupName(version)
                 .apiInfo(apiInfo());
     }
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("제목")
-                .description("설명")
+                .title(title)
+                .description(desc)
                 .version(version)
-                .contact(new Contact("이름", "홈페이지 URL", "e-mail"))
+                .contact(new Contact("ToonDa(툰다)", "https://github.com/rgngr/ToonDa", "wlals8369@naver,com"))
                 .build();
     }
+
 }
