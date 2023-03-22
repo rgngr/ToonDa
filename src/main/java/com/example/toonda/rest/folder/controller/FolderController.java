@@ -16,7 +16,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/folders")
-@Api(tags = {"폴더"})
+@Api(tags = {"1) 폴더"})
 public class FolderController {
 
     private final FolderService folderService;
@@ -33,7 +33,7 @@ public class FolderController {
         return DataResponseDto.of(folderService.getFolder(folderId), Code.GET_FOLDER.getStatusMsg());
     }
 
-    @Operation(summary = "GET 폴더 수정 페이지")
+    @Operation(summary = "폴더 수정 페이지")
     @GetMapping("/{folderId}/update-page")
     public ResponseDto getFolderUpdatePage(@PathVariable Long folderId) {
         return DataResponseDto.of(folderService.getFolderUpdatePage(folderId), Code.GET_FOLDER_UPDATE_PAGE.getStatusMsg());

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/block")
-@Api(tags = {"차단"})
+@Api(tags = {"7) 차단"})
 public class BlockController {
 
     private final BlockService blockService;

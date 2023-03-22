@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api")
-@Api(tags = {"구독/좋아요"})
+@Api(tags = {"5) 구독/좋아요"})
 public class LikeController {
 
     private final LikeService likeService;

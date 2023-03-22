@@ -16,7 +16,7 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/folders")
-@Api(tags = {"다이어리"})
+@Api(tags = {"2) 다이어리"})
 public class DiaryController {
 
     private final DiaryService diaryService;
@@ -33,7 +33,7 @@ public class DiaryController {
         return DataResponseDto.of(diaryService.getFolderList(), Code.GET_FOLDERS.getStatusMsg());
     }
 
-    @Operation(summary = "GET 다이어리 수정 페이지")
+    @Operation(summary = "다이어리 수정 페이지")
     @GetMapping("/diaries/{diaryId}")
     public ResponseDto getDiaryUpdatePage(@PathVariable Long diaryId) {
         return DataResponseDto.of(diaryService.getDiaryUpdatePage(diaryId), Code.GET_DIARY_UPDATE_PAGE.getStatusMsg());

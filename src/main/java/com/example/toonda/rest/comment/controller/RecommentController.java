@@ -15,7 +15,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comments")
-@Api(tags = {"대댓글"})
+@Api(tags = {"4) 대댓글"})
 public class RecommentController {
 
     private final RecommentService recommentService;
