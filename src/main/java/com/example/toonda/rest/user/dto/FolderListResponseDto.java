@@ -19,6 +19,7 @@ public class FolderListResponseDto {
     @Getter
     public static class Folders {
 
+        private Long folderId;
         private String folderImg;
         private boolean open;
         private String title;
@@ -26,6 +27,7 @@ public class FolderListResponseDto {
         private int diaryNum;
 
         public Folders(Folder folder, Long likeNum) {
+            this.folderId = folder.getId();
             this.folderImg = folder.getImg();
             this.open = folder.isOpen();
             this.title = folder.getTitle();

@@ -22,7 +22,6 @@ public class FolderResponseDto {
     }
     private Long likeNum;
     private boolean open;
-    private LocalDateTime modifiedAt;
     private List<DiaryResponseDto> diaryList = new ArrayList<>();
 
     public void addDiary(DiaryResponseDto responseDto) {
@@ -38,7 +37,6 @@ public class FolderResponseDto {
         this.folderImg = folder.getImg();
         this.likeNum = likeNum;
         this.open = folder.isOpen();
-        this.modifiedAt = folder.getModifiedAt();
     }
 
     public FolderResponseDto(Folder folder) {

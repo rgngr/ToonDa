@@ -20,13 +20,15 @@ public class DiaryListResponseDto {
     @Getter
     public static class Diaries {
 
-        private String img;
+        private Long diaryId;
+        private String diaryImg;
         private String content;
         private LocalDate date;
         private String folderTitle;
 
         public Diaries(Diary diary) {
-            this.img = diary.getImg();
+            this.diaryId = diary.getId();
+            this.diaryImg = diary.getImg();
             this.content = diary.getContent();
             this.date = diary.getDate();
             this.folderTitle = diary.getFolder().getTitle();
