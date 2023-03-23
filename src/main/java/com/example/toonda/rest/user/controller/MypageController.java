@@ -16,24 +16,24 @@ import java.io.IOException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/mypage")
-@Api(tags = {"마이페이지"})
+@Api(tags = {"6) 마이페이지"})
 public class MypageController {
 
     private final MypageService mypageService;
 
-    @Operation(summary = "get 프로필 (img, username, introduction)")
+    @Operation(summary = "프로필 불러오기")
     @GetMapping("/{userId}/profile")
     public ResponseDto getProfile(@PathVariable Long userId) {
         return DataResponseDto.of(mypageService.getProfile(userId), Code.GET_PROFILE.getStatusMsg());
     }
 
-    @Operation(summary = "get 폴더 리스트")
+    @Operation(summary = "폴더 리스트")
     @GetMapping("/{userId}/folders")
     public ResponseDto getFolders(@PathVariable Long userId) {
         return DataResponseDto.of(mypageService.getFolders(userId), Code.GET_FOLDERS.getStatusMsg());
     }
 
-    @Operation(summary = "get 프로필 수정 페이지")
+    @Operation(summary = "프로필 수정 페이지")
     @GetMapping("/profile/updqte-page")
     public ResponseDto getUpdatePage() {
         return DataResponseDto.of(mypageService.getUpdatePage(), Code.GET_PROFILE_UPDATE_PAGE.getStatusMsg());
@@ -53,7 +53,7 @@ public class MypageController {
         return ResponseDto.of(true, Code.DELETE_PROFILE_IMG);
     }
 
-    @Operation(summary = "username/ introduction 수정")
+    @Operation(summary = "유저네임/ 자기소개 수정")
     @PatchMapping("/profile/contents")
     public ResponseDto updateProfileContents(@RequestBody @Valid MypageRequestDto.UpdateContents requestDto) {
         mypageService.updateProfileContents(requestDto);

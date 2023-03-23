@@ -1,8 +1,6 @@
 package com.example.toonda.rest.block.dto;
 
 import com.example.toonda.rest.user.entity.User;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiResponse;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;

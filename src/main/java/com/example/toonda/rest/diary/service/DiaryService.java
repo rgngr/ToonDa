@@ -28,7 +28,7 @@ public class DiaryService {
 
     // 다이어리 생성
     @Transactional
-    public DiaryResponseDto createDiary(Long folderId, DiaryRequestDto requestDto) throws IOException {
+    public DiaryResponseDto.Shorten createDiary(Long folderId, DiaryRequestDto requestDto) throws IOException {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -42,7 +42,7 @@ public class DiaryService {
         // diaryNum++
         folder.plusDiaryNum();
 
-        return new DiaryResponseDto(user, diary);
+        return new DiaryResponseDto.Shorten(user, diary);
     }
 
     // 폴더 선택 리스트
@@ -63,7 +63,7 @@ public class DiaryService {
 
     // get 다이어리 수정 페이지
     @Transactional(readOnly = true)
-    public DiaryResponseDto getDiaryUpdatePage(Long diaryId) {
+    public DiaryResponseDto.Shorten getDiaryUpdatePage(Long diaryId) {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -72,7 +72,7 @@ public class DiaryService {
         // 다이어리 작성자 여부 확인
         if (user.getId() != diary.getUser().getId()) throw new RestApiException(Code.INVALID_USER);
         // 다이어리 수정 페이지 생성
-        return new DiaryResponseDto(user, diary);
+        return new DiaryResponseDto.Shorten(user, diary);
     }
 
     // 다이어리 수정

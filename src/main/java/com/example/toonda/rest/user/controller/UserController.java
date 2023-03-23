@@ -8,7 +8,6 @@ import com.example.toonda.rest.user.dto.SignupRequestDto;
 import com.example.toonda.rest.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +16,7 @@ import javax.validation.Valid;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-@Api(tags = {"유저"})
+@Api(tags = {"0) 유저"})
 public class UserController {
 
     private final UserService userService;

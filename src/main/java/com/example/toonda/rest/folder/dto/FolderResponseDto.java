@@ -3,7 +3,6 @@ package com.example.toonda.rest.folder.dto;
 import com.example.toonda.rest.diary.dto.DiaryResponseDto;
 import com.example.toonda.rest.folder.entity.Folder;
 import lombok.Getter;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,6 @@ public class FolderResponseDto {
     }
     private Long likeNum;
     private boolean open;
-    private LocalDateTime modifiedAt;
     private List<DiaryResponseDto> diaryList = new ArrayList<>();
 
     public void addDiary(DiaryResponseDto responseDto) {
@@ -38,15 +36,29 @@ public class FolderResponseDto {
         this.folderImg = folder.getImg();
         this.likeNum = likeNum;
         this.open = folder.isOpen();
-        this.modifiedAt = folder.getModifiedAt();
     }
 
-    public FolderResponseDto(Folder folder) {
-        this.folderId = folder.getId();
-        this.userId = folder.getUser().getId();
-        this.title = folder.getTitle();
-        this.folderImg = folder.getImg();
-        this.open = folder.isOpen();
+    @Getter
+    public static class Shorten {
+
+        private Long folderId;
+        private Long userId;
+        private String title;
+        private String folderImg;
+        private List<HashtagResponseDto> hashtagList = new ArrayList<>();
+        public void addHashtag(HashtagResponseDto responseDto) {
+            hashtagList.add(responseDto);
+        }
+        private boolean open;
+
+        public Shorten(Folder folder) {
+            this.folderId = folder.getId();
+            this.userId = folder.getUser().getId();
+            this.title = folder.getTitle();
+            this.folderImg = folder.getImg();
+            this.open = folder.isOpen();
+        }
+
     }
 
     @Getter
