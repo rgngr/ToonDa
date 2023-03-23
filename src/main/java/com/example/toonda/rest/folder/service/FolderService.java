@@ -103,7 +103,7 @@ public class FolderService {
 
     // Get 폴더 수정 페이지
     @Transactional(readOnly = true)
-    public FolderResponseDto getFolderUpdatePage(Long folderId) {
+    public FolderResponseDto.Shorten getFolderUpdatePage(Long folderId) {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -114,13 +114,13 @@ public class FolderService {
             throw new RestApiException(Code.INVALID_USER);
         } else {
             // 폴더 response 생성
-            FolderResponseDto folderResponseDto = new FolderResponseDto(folder);
+            FolderResponseDto.Shorten folderUPResponseDto = new FolderResponseDto.Shorten(folder);
             // 해시태그 붙이기
             List<String> hashtags = hashtagRepository.findAllByFolder(folder);
             for (String hashtag : hashtags) {
-                folderResponseDto.addHashtag(new HashtagResponseDto(hashtag));
+                folderUPResponseDto.addHashtag(new HashtagResponseDto(hashtag));
             }
-            return folderResponseDto;
+            return folderUPResponseDto;
         }
     }
 
