@@ -96,7 +96,7 @@ public class CommentService {
 
     // 댓글 삭제
     @Transactional
-    public void deleteComment(Long id) {
+    public CommentResponseDto.Delete deleteComment(Long id) {
         // 로그인 유무 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -122,7 +122,7 @@ public class CommentService {
             // 폴더 존재 여부 확인 (deleted = false, open = true)
             folder = folderRepository.getAliveFolder(diary.getFolder().getId()).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
         }
-        // 댓글 삭제 (본인 or 다른 사람)
+        // 댓글 삭제 (본인 or 다이어리 작성자)
         if (user.getId() == folder.getUser().getId()) { // 다이어리 작성자가 삭제 >> deleted = true
             comment.deleteComment();
         } else if ((user.getId() != folder.getUser().getId()) && (user.getId() == comment.getUser().getId())) {
@@ -134,6 +134,7 @@ public class CommentService {
                 comment.updateComment();
             }
         }
+        return new CommentResponseDto.Delete(comment);
     }
 
     // CommentResponseDto 생성

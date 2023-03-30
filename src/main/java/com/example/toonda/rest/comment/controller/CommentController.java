@@ -36,8 +36,7 @@ public class CommentController {
     @Operation(summary = "댓글 삭제")
     @PatchMapping("/comments/{commentId}")
     public ResponseDto deleteComment(@PathVariable Long commentId) {
-        commentService.deleteComment(commentId);
-        return ResponseDto.of(true, Code.DELETE_COMMENT);
+        return DataResponseDto.of(commentService.deleteComment(commentId), Code.DELETE_COMMENT.getStatusMsg());
     }
 
 }
