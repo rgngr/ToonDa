@@ -49,8 +49,7 @@ public class FolderController {
     @Operation(summary = "폴더 삭제")
     @DeleteMapping("/{folderId}")
     public ResponseDto deleteFolder(@PathVariable Long folderId) {
-        folderService.deleteFolder(folderId);
-        return ResponseDto.of(true, Code.DELETE_FOLDER);
+        return DataResponseDto.of(folderService.deleteFolder(folderId), Code.DELETE_FOLDER.getStatusMsg());
     }
 
 }

@@ -172,7 +172,7 @@ public class FolderService {
 
     // 폴더 삭제
     @Transactional
-    public void deleteFolder(Long folderId) {
+    public FolderResponseDto.Delete deleteFolder(Long folderId) {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -190,6 +190,8 @@ public class FolderService {
             // 해당 폴더의 모든 다이어리 deleted = true
             diaryRepository.deleteAllDiaries(folder);
             // 해당 다이어리의 이미지들도 s3에서 삭제해야 하는데.... img 테이블 따로 만들기? @scheduled 돌리기?
+
+            return new FolderResponseDto.Delete(folder);
         }
     }
 
