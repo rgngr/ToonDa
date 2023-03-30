@@ -91,7 +91,7 @@ public class DiaryService {
 
     // 다이어리 삭제
     @Transactional
-    public void deleteDiary(Long diaryId) {
+    public DiaryResponseDto.Delete deleteDiary(Long diaryId) {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -103,6 +103,8 @@ public class DiaryService {
         String diaryImg = diary.getImg();
         s3Uploader.deleteFile(diaryImg.split(".com/")[1]);
         diary.deleteDiary();
+
+        return new DiaryResponseDto.Delete(diary);
     }
 
     // 다이어리 리스트
