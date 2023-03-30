@@ -110,7 +110,7 @@ public class RecommentService {
 
     // 대댓글 삭제
     @Transactional
-    public void deleteRecomment(Long id) {
+    public RecommentResponseDto.Delete deleteRecomment(Long id) {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -143,7 +143,7 @@ public class RecommentService {
             // 폴더 존재 여부 확인 (deleted = false, open = true)
             folder = folderRepository.getAliveFolder(diary.getFolder().getId()).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
         }
-        // 대댓글 삭제
+        // 대댓글 삭제 (본인 or 다이어리 작성자)
         if (user.getId() == folder.getUser().getId()) {
             recomment.deleteRecomment(); // 다이어리 작성자가 삭제 >> deleted = true
         } else if ((user.getId() != folder.getUser().getId()) && (user.getId() == recomment.getUser().getId())) {
@@ -155,6 +155,7 @@ public class RecommentService {
                 recomment.updateRecomment();
             }
         }
+        return new RecommentResponseDto.Delete(recomment);
     }
 
 }

@@ -36,8 +36,7 @@ public class RecommentController {
     @Operation(summary = "대댓글 삭제")
     @PatchMapping("/recomments/{recommentId}")
     public ResponseDto deleteComment(@PathVariable Long recommentId) {
-        recommentService.deleteRecomment(recommentId);
-        return ResponseDto.of(true, Code.DELETE_RECOMMENT);
+        return DataResponseDto.of(recommentService.deleteRecomment(recommentId), Code.DELETE_RECOMMENT.getStatusMsg());
     }
 
 }
