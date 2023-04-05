@@ -1,19 +1,21 @@
 package com.example.toonda.rest.folder.dto;
 
-import com.example.toonda.rest.folder.entity.Folder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 public class FolderListResponseDto {
 
+    private int page;
     private List<Folder> folderList = new ArrayList<>();
 
     public void addFolder(Folder responseDto) {
         folderList.add(responseDto);
+    }
+
+    public FolderListResponseDto(int page) {
+        this.page = page;
     }
 
     @Getter

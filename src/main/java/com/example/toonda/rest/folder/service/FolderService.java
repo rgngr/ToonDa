@@ -41,27 +41,27 @@ public class FolderService {
 
     // 메인 페이지 폴더 리스트
     @Transactional(readOnly = true)
-    public FolderListResponseDto getFolders(String sortby, int pageNum) {
+    public FolderListResponseDto getFolders(String sortby, int page) {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
         // 폴더 리스트 생성
-        FolderListResponseDto folderListResponseDto = new FolderListResponseDto();
+        FolderListResponseDto folderListResponseDto = new FolderListResponseDto(page);
         // 정렬 기준에 따라
         if (sortby.equals("like")) {
-            List<Folder> folders = folderRepository.findAllLikeFolders(user, PageRequest.of(pageNum, 15));
+            List<Folder> folders = folderRepository.findAllLikeFolders(user, PageRequest.of(page, 15));
             for (Folder folder : folders) {
                 Long likeNum = likeRepository.countByFolder(folder);
                 folderListResponseDto.addFolder(new FolderListResponseDto.Folder(folder, likeNum));
             }
         } else if (sortby.equals("new")) {
-            List<Folder> folders = folderRepository.findAllNewFolders(PageRequest.of(pageNum, 15));
+            List<Folder> folders = folderRepository.findAllNewFolders(PageRequest.of(page, 15));
             for (Folder folder : folders) {
                 Long likeNum = likeRepository.countByFolder(folder);
                 folderListResponseDto.addFolder(new FolderListResponseDto.Folder(folder, likeNum));
             }
         } else if (sortby.equals("popular")) {
-            List<Folder> folders = folderRepository.findAllPopularFolders(PageRequest.of(pageNum, 15));
+            List<Folder> folders = folderRepository.findAllPopularFolders(PageRequest.of(page, 15));
             for (Folder folder : folders) {
                 Long likeNum = likeRepository.countByFolder(folder);
                 folderListResponseDto.addFolder(new FolderListResponseDto.Folder(folder, likeNum));

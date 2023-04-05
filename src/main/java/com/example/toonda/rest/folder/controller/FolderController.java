@@ -24,8 +24,8 @@ public class FolderController {
     @GetMapping("")
     public ResponseDto getFolders(
             @RequestParam(value="sortby", defaultValue = "like", required = false) String sortby,
-            @RequestParam(value = "pageNum") int pageNum) {
-       return DataResponseDto.of(folderService.getFolders(sortby, pageNum));
+            @RequestParam(value = "page") int page) {
+       return DataResponseDto.of(folderService.getFolders(sortby, page));
     }
 
     @Operation(summary = "폴더 생성")
