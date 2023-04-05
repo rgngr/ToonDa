@@ -9,6 +9,7 @@ import com.example.toonda.rest.comment.repository.CommentRepository;
 import com.example.toonda.rest.diary.dto.DiaryResponseDto;
 import com.example.toonda.rest.diary.entity.Diary;
 import com.example.toonda.rest.diary.repository.DiaryRepository;
+import com.example.toonda.rest.folder.dto.FolderListResponseDto;
 import com.example.toonda.rest.folder.dto.FolderRequestDto;
 import com.example.toonda.rest.folder.dto.FolderResponseDto;
 import com.example.toonda.rest.folder.dto.HashtagResponseDto;
@@ -19,6 +20,7 @@ import com.example.toonda.rest.folder.repository.FolderRepository;
 import com.example.toonda.rest.like.repository.LikeRepository;
 import com.example.toonda.rest.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
@@ -36,6 +38,37 @@ public class FolderService {
     private final BlockRepository blockRepository;
     private final LikeRepository likeRepository;
     private final CommentRepository commentRepository;
+
+    // 메인 페이지 폴더 리스트
+    @Transactional(readOnly = true)
+    public FolderListResponseDto getFolders(String sortby, int pageNum) {
+        // 로그인 여부 확인
+        User user = SecurityUtil.getCurrentUser();
+        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+        // 폴더 리스트 생성
+        FolderListResponseDto folderListResponseDto = new FolderListResponseDto();
+        // 정렬 기준에 따라
+        if (sortby.equals("like")) {
+            List<Folder> folders = folderRepository.findAllLikeFolders(user, PageRequest.of(pageNum, 15));
+            for (Folder folder : folders) {
+                Long likeNum = likeRepository.countByFolder(folder);
+                folderListResponseDto.addFolder(new FolderListResponseDto.Folder(folder, likeNum));
+            }
+        } else if (sortby.equals("new")) {
+            List<Folder> folders = folderRepository.findAllNewFolders(PageRequest.of(pageNum, 15));
+            for (Folder folder : folders) {
+                Long likeNum = likeRepository.countByFolder(folder);
+                folderListResponseDto.addFolder(new FolderListResponseDto.Folder(folder, likeNum));
+            }
+        } else if (sortby.equals("popular")) {
+            List<Folder> folders = folderRepository.findAllPopularFolders(PageRequest.of(pageNum, 15));
+            for (Folder folder : folders) {
+                Long likeNum = likeRepository.countByFolder(folder);
+                folderListResponseDto.addFolder(new FolderListResponseDto.Folder(folder, likeNum));
+            }
+        }
+        return folderListResponseDto;
+    }
 
     // 폴더 생성
     @Transactional
