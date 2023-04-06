@@ -2,7 +2,6 @@ package com.example.toonda.rest.folder.repository;
 
 import com.example.toonda.rest.folder.entity.Folder;
 import com.example.toonda.rest.user.entity.User;
-import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
