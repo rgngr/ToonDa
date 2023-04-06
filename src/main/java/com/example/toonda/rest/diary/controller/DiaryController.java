@@ -7,7 +7,6 @@ import com.example.toonda.rest.diary.dto.DiaryRequestDto;
 import com.example.toonda.rest.diary.service.DiaryService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -52,10 +51,13 @@ public class DiaryController {
         return DataResponseDto.of(diaryService.deleteDiary(diaryId), Code.DELETE_DIARY.getStatusMsg());
     }
 
-//    @ApiOperation("다이어리 리스트")
-//    @GetMapping("/{folderId}/diary-list")
-//    public ResponseDto getDiaryList(@PathVariable Long folderId) {
-//        return DataResponseDto.of(diaryService.getDiaryList(folderId), Code.GET_DIARIES.getStatusMsg());
-//    }
+    @Operation(summary = "다이어리 리스트")
+    @GetMapping("/diaries")
+    public ResponseDto getDiaries(
+            @RequestParam(value = "folderId") Long folderId,
+            @RequestParam(value="sortby", defaultValue = "asc", required = false) String sortby,
+            @RequestParam(value = "page") int page) {
+        return DataResponseDto.of(diaryService.getDiaries(folderId, sortby, page));
+    }
 
 }
