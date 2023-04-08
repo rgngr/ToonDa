@@ -4,6 +4,9 @@ import com.example.toonda.config.exception.RestApiException;
 import com.example.toonda.config.exception.errorcode.Code;
 import com.example.toonda.config.s3.S3Uploader;
 import com.example.toonda.config.security.SecurityUtil;
+import com.example.toonda.rest.block.repository.BlockRepository;
+import com.example.toonda.rest.comment.repository.CommentRepository;
+import com.example.toonda.rest.diary.dto.DiaryListResponseDto;
 import com.example.toonda.rest.diary.dto.DiaryRequestDto;
 import com.example.toonda.rest.diary.dto.DiaryResponseDto;
 import com.example.toonda.rest.diary.entity.Diary;
@@ -11,8 +14,10 @@ import com.example.toonda.rest.diary.repository.DiaryRepository;
 import com.example.toonda.rest.folder.dto.FolderResponseDto;
 import com.example.toonda.rest.folder.entity.Folder;
 import com.example.toonda.rest.folder.repository.FolderRepository;
+import com.example.toonda.rest.like.repository.LikeRepository;
 import com.example.toonda.rest.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
@@ -24,7 +29,10 @@ public class DiaryService {
 
     private final FolderRepository folderRepository;
     private final DiaryRepository diaryRepository;
+    private final BlockRepository blockRepository;
     private final S3Uploader s3Uploader;
+    private final CommentRepository commentRepository;
+    private final LikeRepository likeRepository;
 
     // 다이어리 생성
     @Transactional
@@ -91,7 +99,7 @@ public class DiaryService {
 
     // 다이어리 삭제
     @Transactional
-    public void deleteDiary(Long diaryId) {
+    public DiaryResponseDto.Delete deleteDiary(Long diaryId) {
         // 로그인 여부 확인
         User user = SecurityUtil.getCurrentUser();
         if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
@@ -103,8 +111,45 @@ public class DiaryService {
         String diaryImg = diary.getImg();
         s3Uploader.deleteFile(diaryImg.split(".com/")[1]);
         diary.deleteDiary();
+
+        return new DiaryResponseDto.Delete(diary);
     }
 
     // 다이어리 리스트
+    @Transactional(readOnly = true)
+    public DiaryListResponseDto getDiaries(Long folderId, String sortby, int page) {
+        // 로그인 여부 확인
+        User user = SecurityUtil.getCurrentUser();
+        if (user == null) throw new RestApiException(Code.NOT_FOUND_AUTHORIZATION_IN_SECURITY_CONTEXT);
+        // 폴더 존재 여부 확인 (deleted = false)
+        Folder folder = folderRepository.findByIdAndDeletedFalse(folderId).orElseThrow(() -> new RestApiException(Code.NO_FOLDER));
+        // 차단 여부 확인
+        boolean isBlocked = blockRepository.existsByUserAndBlockedUser(folder.getUser(), user);
+        if (isBlocked) throw new RestApiException(Code.NO_FOLDER);
+        // 공개 여부 + 작성자 여부에 따라
+        if (folder.isOpen() || (!folder.isOpen() && (user.getId() == folder.getUser().getId()))) {
+            // 다이어리 리스트 생성
+            DiaryListResponseDto diaryListResponseDto = new DiaryListResponseDto(page);
+            // 정렬 기준에 따라
+            if (sortby.equals("asc")) {
+                List<Diary> diaries = diaryRepository.findAllForDiaryListAsc(folder, PageRequest.of(page, 15));
+                for (Diary diary : diaries) {
+                    Long commentNum = commentRepository.countByDiaryAndDeletedFalse(diary);
+                    Long likeNum = likeRepository.countByDiary(diary);
+                    diaryListResponseDto.addDiary(new DiaryListResponseDto.Diary(diary, commentNum, likeNum));
+                }
+            } else if (sortby.equals("desc")) {
+                List<Diary> diaries = diaryRepository.findAllForDiaryListDesc(folder, PageRequest.of(page, 15));
+                for (Diary diary : diaries) {
+                    Long commentNum = commentRepository.countByDiaryAndDeletedFalse(diary);
+                    Long likeNum = likeRepository.countByDiary(diary);
+                    diaryListResponseDto.addDiary(new DiaryListResponseDto.Diary(diary, commentNum, likeNum));
+                }
+            }
+            return diaryListResponseDto;
+        } else {
+            throw new RestApiException(Code.NO_FOLDER);
+        }
+    }
 
 }

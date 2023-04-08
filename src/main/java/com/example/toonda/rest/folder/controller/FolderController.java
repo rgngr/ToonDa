@@ -7,7 +7,6 @@ import com.example.toonda.rest.folder.dto.FolderRequestDto;
 import com.example.toonda.rest.folder.service.FolderService;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
@@ -20,6 +19,14 @@ import java.io.IOException;
 public class FolderController {
 
     private final FolderService folderService;
+
+    @Operation(summary = "메인페이지 폴더 리스트")
+    @GetMapping("")
+    public ResponseDto getFolders(
+            @RequestParam(value="sortby", defaultValue = "like", required = false) String sortby,
+            @RequestParam(value = "page") int page) {
+       return DataResponseDto.of(folderService.getFolders(sortby, page));
+    }
 
     @Operation(summary = "폴더 생성")
     @PostMapping("")
@@ -41,7 +48,8 @@ public class FolderController {
 
     @Operation(summary = "폴더 수정")
     @PatchMapping("/{folderId}")
-    public ResponseDto updateFolder(@PathVariable Long folderId, @ModelAttribute @Valid FolderRequestDto.Update requestDto) throws IOException {
+    public ResponseDto updateFolder(@PathVariable Long folderId,
+                                    @ModelAttribute @Valid FolderRequestDto.Update requestDto) throws IOException {
         folderService.updateFolder(folderId, requestDto);
         return ResponseDto.of(true, Code.UPDATE_FOLDER);
     }
@@ -49,8 +57,7 @@ public class FolderController {
     @Operation(summary = "폴더 삭제")
     @DeleteMapping("/{folderId}")
     public ResponseDto deleteFolder(@PathVariable Long folderId) {
-        folderService.deleteFolder(folderId);
-        return ResponseDto.of(true, Code.DELETE_FOLDER);
+        return DataResponseDto.of(folderService.deleteFolder(folderId), Code.DELETE_FOLDER.getStatusMsg());
     }
 
 }

@@ -22,7 +22,7 @@ public class ToonDaApplication {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:3000", "https://toon-da.vercel.app/")
+                        .allowedOrigins("http://localhost:3000")
                         .allowedHeaders("*")
                         .allowedMethods("*")
                         .exposedHeaders(JwtUtil.AUTHORIZATION_HEADER); //token 내용 전달

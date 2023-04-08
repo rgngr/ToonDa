@@ -33,4 +33,18 @@ public class CommentResponseDto {
         this.createdAt = comment.getCreatedAt();
     }
 
+    @Getter
+    public static class Delete {
+
+        private Long commentId;
+        private boolean recommented;
+        private boolean deleted;
+
+        public Delete(Comment comment) {
+            this.commentId = comment.getId();
+            this.recommented = comment.isRecommented();
+            this.deleted = comment.isDeleted();
+        }
+    }
+
 }

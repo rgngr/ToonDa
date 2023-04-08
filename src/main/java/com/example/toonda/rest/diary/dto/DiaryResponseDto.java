@@ -65,4 +65,16 @@ public class DiaryResponseDto {
         }
     }
 
+    @Getter
+    public static class Delete {
+
+        private Long diaryId;
+        private boolean deleted;
+
+        public Delete(Diary diary) {
+            this.diaryId = diary.getId();
+            this.deleted = diary.isDeleted();
+        }
+    }
+
 }

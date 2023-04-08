@@ -29,4 +29,18 @@ public class RecommentResponseDto {
         this.createdAt = recomment.getCreatedAt();
     }
 
+    @Getter
+    public static class Delete {
+
+        private Long recommentId;
+        private boolean rrecommented;
+        private boolean deleted;
+
+        public Delete(Recomment recomment) {
+            this.recommentId = recomment.getId();
+            this.rrecommented = recomment.isRrecommented();
+            this.deleted = recomment.isDeleted();
+        }
+    }
+
 }

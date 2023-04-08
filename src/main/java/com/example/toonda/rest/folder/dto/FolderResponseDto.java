@@ -84,4 +84,16 @@ public class FolderResponseDto {
 
     }
 
+    @Getter
+    public static class Delete {
+
+        private Long folderId;
+        private boolean deleted;
+
+        public Delete(Folder folder) {
+            this.folderId = folder.getId();
+            this.deleted = folder.isDeleted();
+        }
+    }
+
 }
