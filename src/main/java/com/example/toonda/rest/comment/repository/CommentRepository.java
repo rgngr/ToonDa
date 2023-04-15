@@ -10,16 +10,17 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    List<Comment> findAllByDiary(Diary diary);
 
-    @Query(value = "select c from Comment c " +
-            "where c.diary= :diary and c.deleted=false and c.user not in(select b.user from Block b where b.blockedUser= :user)")
+    // 댓글 리스트
+    @Query(value = "select c from Comment c where c.diary= :diary and c.deleted=false and c.user not in(select b.user from Block b where b.blockedUser= :user)")
     List<Comment> getCommentList(@Param("diary") Diary diary, @Param("user")User user);
 
-    Optional<Comment> findByIdAndDeletedFalse(Long id);
-
+    // 특정 댓글, 삭제 안 된
     @Query(value = "select c from Comment c where c.id= :id and c.deleted = false and c.recommented = false")
     Optional<Comment> getAliveComment(@Param("id") Long id);
 
+    // 삭제 되지 않은 댓글 개수
     Long countByDiaryAndDeletedFalse(Diary diary);
+
+    Optional<Comment> findByIdAndDeletedFalse(Long id);
 }

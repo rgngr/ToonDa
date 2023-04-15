@@ -1,6 +1,5 @@
 package com.example.toonda.rest.comment.dto;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import java.util.ArrayList;
